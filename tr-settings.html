@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Settings | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-danger: #ef4444;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --bg-gray: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-dark: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            transition: background 0.3s ease;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        body.dark-mode .nav-item.active {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .settings-container {
+            width: 100%;
+            max-width: 800px;
+            color: var(--text-dark);
+        }
+
+        .settings-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .profile-header-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        #tr-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--tr-primary);
+        }
+
+        /* --- Form Elements --- */
+        .grid-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        input {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 600;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--tr-primary);
+        }
+
+        /* --- Toggle Switch --- */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--tr-primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .btn-save {
+            background: var(--tr-primary);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            float: right;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="settings-container">
+            <h1 style="font-weight: 800; color: blue;">Settings</h1>
+
+            <div class="profile-header-card">
+                <img id="tr-avatar" src="" alt="Avatar">
+                <div>
+                    <h2 id="tr-name-header" style="margin:0">Loading...</h2>
+                    <p id="tr-email-display" style="margin:5px 0">---</p>
+                    <span id="theme-status"
+                        style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--tr-primary);">Light
+                        Mode Active</span>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="grid-form">
+                    <div class="form-group">
+                        <label>Display Name</label>
+                        <input type="text" id="edit-name" oninput="syncProfile()">
+                    </div>
+                    <div class="form-group">
+                        <label>Faculty ID</label>
+                        <input type="text" id="edit-id" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 style="margin-top:0">Appearance</h3>
+                <div class="setting-row">
+                    <div>
+                        <h4 style="margin:0">Dark Mode</h4>
+                        <p style="margin:5px 0; font-size: 0.8rem; color: var(--text-muted);">Adjust the interface to
+                            reduce eye strain.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 style="margin-top:0">Security</h3>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="new-pass" placeholder="Min. 8 characters">
+                </div>
+            </div>
+
+            <button class="btn-save" onclick="saveAll()">Save All Changes</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load User Data
+            const trName = localStorage.getItem('userName') || "Prof. Rishon";
+            const trEmail = localStorage.getItem('userEmail') || "rishon@educore.edu";
+            const trID = localStorage.getItem('userID') || "TR-8821";
+
+            // Load Theme Preference
+            const isDark = localStorage.getItem('darkMode') === 'enabled';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').checked = true;
+                document.getElementById('theme-status').innerText = "Dark Mode Active";
+            }
+
+            // Populate UI
+            document.getElementById('tr-name-header').innerText = trName;
+            document.getElementById('tr-email-display').innerText = trEmail;
+            document.getElementById('edit-name').value = trName;
+            document.getElementById('edit-id').value = trID;
+            updateAvatar(trName);
+        });
+
+        // Feature 1: Real-time Syncing
+        function syncProfile() {
+            const name = document.getElementById('edit-name').value;
+            document.getElementById('tr-name-header').innerText = name || "New User";
+            updateAvatar(name);
+        }
+
+        function updateAvatar(name) {
+            document.getElementById('tr-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4f46e5&color=fff&size=128`;
+        }
+
+        // Feature 2: Functional Dark Mode
+        function toggleDarkMode() {
+            const isChecked = document.getElementById('dark-mode-toggle').checked;
+            if (isChecked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+                document.getElementById('theme-status').innerText = "Dark Mode Active";
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+                document.getElementById('theme-status').innerText = "Light Mode Active";
+            }
+        }
+
+        // Feature 3: Validation and Final Save
+        function saveAll() {
+            const name = document.getElementById('edit-name').value;
+            const pass = document.getElementById('new-pass').value;
+
+            if (name.length < 3) {
+                alert("Name is too short!");
+                return;
+            }
+
+            if (pass.length > 0 && pass.length < 8) {
+                alert("Password must be at least 8 characters!");
+                return;
+            }
+
+            localStorage.setItem('userName', name);
+            alert("Settings saved and synced successfully!");
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+</body>
+
+</html>

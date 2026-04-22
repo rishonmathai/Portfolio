@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --danger-red: #ef4444;
+            --success-green: #10b981;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* Security Card Style */
+        .security-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-color);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+        }
+
+        .save-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .save-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Security Options */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-text h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .setting-text p {
+            margin: 5px 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-blue);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(21px);
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+            
+            <div class="security-card">
+                <div class="card-header">
+                    <i class="fas fa-key"></i>
+                    <h2>Change Password</h2>
+                </div>
+                <form onsubmit="handlePasswordChange(event)">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="input-box" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="input-box" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="input-box" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="save-btn">Update Password</button>
+                </form>
+            </div>
+
+            <div class="security-card">
+                <div class="card-header">
+                    <i class="fas fa-shield-check"></i>
+                    <h2>Security Settings</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>Two-Factor Authentication</h4>
+                        <p>Secure your account with an extra layer of security.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>Login Alerts</h4>
+                        <p>Get notified when someone logs into your account.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>Device Trust</h4>
+                        <p>Remember this device for 30 days.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function handlePasswordChange(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('.save-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert("Password updated successfully!");
+                btn.innerHTML = 'Update Password';
+                btn.disabled = false;
+                event.target.reset();
+            }, 1500);
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="student.js"></script>
+</body>
+
+</html>

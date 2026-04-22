@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | EduCore</title>
+    <link rel="stylesheet" href="login-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="theme-manager.js"></script>
+</head>
+
+<body>
+
+    <div class="portal-wrapper">
+        <div class="brand-panel">
+            <div class="brand-content">
+                <i class="fas fa-graduation-cap brand-logo"></i>
+                <h1>EduCore Systems</h1>
+                <p>Empowering education through seamless digital integration. Access your academic universe in one
+                    click.</p>
+            </div>
+            <div class="brand-footer">
+                <p>© 2026 EduCore Global • v4.2.0</p>
+            </div>
+        </div>
+
+        <div class="login-panel">
+            <div class="login-container">
+                <header>
+                    <h2>Welcome Back</h2>
+                    <p>Please select your role and sign in</p>
+                </header>
+
+                <div class="role-selector">
+                    <input type="radio" name="role" id="student" value="student" checked>
+                    <label for="student" class="role-item">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Student</span>
+                    </label>
+
+                    <input type="radio" name="role" id="teacher" value="teacher">
+                    <label for="teacher" class="role-item">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teacher</span>
+                    </label>
+
+                    <input type="radio" name="role" id="admin" value="admin">
+                    <label for="admin" class="role-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Admin</span>
+                    </label>
+                </div>
+
+                <form id="unifiedLoginForm" onsubmit="handleAuth(event)">
+                    <div class="form-group">
+                        <label id="idLabel">Verification Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="userEmailVerify" placeholder="Enter your registered email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Access Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="userPass" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="auth-options">
+                        <label class="remember-me">
+                            <input type="checkbox"> Keep me signed in
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" id="gotodashboard" class="btn-submit">Sign In to Dashboard</button>
+
+                    <div class="separator"><span>Or continue with</span></div>
+
+                    <button type="button" class="btn-google">
+                        <img src="Google_logo.webp" alt="Google">
+                        Google Workspace
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

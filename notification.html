@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --unread-bg: #f0f9ff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .header-title h2 {
+            margin: 0;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mark-read-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 10px;
+            color: var(--primary-blue);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .mark-read-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        /* Notification List */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notification-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            gap: 18px;
+            transition: 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-item.unread {
+            background: var(--unread-bg);
+            border-color: #bae6fd;
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 4px;
+            background: var(--primary-blue);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Icon Variants */
+        .icon-exam {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .icon-fee {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .icon-attendance {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+
+        .icon-system {
+            background: #e0e7ff;
+            color: #6366f1;
+        }
+
+        .notif-content {
+            flex: 1;
+        }
+
+        .notif-content h4 {
+            margin: 0 0 4px 0;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .notif-content p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .notif-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 8px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+    <main class="main-wrapper">
+        <div class="content-limit">
+
+            <header class="page-header">
+                <div class="header-title">
+                    <h2><i class="fas fa-bell"></i> Notifications</h2>
+                </div>
+                <button class="mark-read-btn" onclick="markAllRead()">
+                    Mark all as read
+                </button>
+            </header>
+
+            <div class="notification-list">
+
+                <div class="notification-item unread">
+                    <div class="icon-box icon-exam">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="notif-content" onclick="goToClassTT()">
+                        <h4>End Semester Timetable Released</h4>
+                        <p>The timetable for the upcoming End Semester Examination (April 2026) has been published.
+                            Please check the Exam portal for your specific schedule.</p>
+                        <span class="notif-time">2 hours ago</span>
+                    </div>
+                </div>
+
+                <div class="notification-item unread">
+                    <div class="icon-box icon-fee">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="notif-content" onclick="goToFees()">
+                        <h4>Fee Payment Reminder</h4>
+                        <p>Final reminder: The last date for Semester IV fee payment is 20th April 2026. Avoid late
+                            fines by paying via the Fees module.</p>
+                        <span class="notif-time">5 hours ago</span>
+                    </div>
+                </div>
+
+                <div class="notification-item unread">
+                    <div class="notification-item">
+                        <div class="icon-box icon-attendance">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="notif-content" onclick="goToAttendance()">
+                            <h4>Attendance Alert: Low Percentage</h4>
+                            <p>Your attendance in 'Database Management Systems' has dropped below 75%. Please meet your
+                                HOD
+                                to discuss the shortage.</p>
+                            <span class="notif-time">Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="icon-box icon-system">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="notif-content" onclick="goToCProfile()">
+                        <h4>System Credentials Updated</h4>
+                        <p>Your academic profile details were successfully updated. If you did not perform this action,
+                            please reset your password immediately.</p>
+                        <span class="notif-time">2 days ago</span>
+                    </div>
+                </div>
+                <div class="page-header-alt">
+                    <a href="student.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        function markAllRead() {
+            const unreadItems = document.querySelectorAll('.notification-item.unread');
+
+            if (unreadItems.length === 0) return;
+
+            unreadItems.forEach(item => {
+                item.classList.remove('unread');
+            });
+
+            // Update the badge in the sidebar if you have one
+            const sidebarBadge = document.querySelector('.badge');
+            if (sidebarBadge) {
+                sidebarBadge.style.display = 'none';
+            }
+
+            alert('All notifications marked as read.');
+        }
+
+        // Individual click handler
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function () {
+                this.classList.remove('unread');
+                // Logic to redirect to specific modules could go here
+            });
+        });
+    </script>
+
+    <script src="student.js"></script>
+</body>
+
+</html>

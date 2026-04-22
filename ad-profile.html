@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile | EduCore Terminal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --admin-accent: #3b82f6;
+            --bg-gray: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        /* --- Animations --- */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--admin-dark);
+            overflow-x: hidden;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* --- Admin Profile Header --- */
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 32px;
+            padding: 60px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+        }
+
+        .profile-avatar-container {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 40px;
+            /* Modern squircle */
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            object-fit: cover;
+            background: #fff;
+            transition: 0.4s;
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border: 4px solid #1e293b;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .header-info h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .badge-root {
+            background: var(--admin-red);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            vertical-align: middle;
+        }
+
+        /* --- Privilege Grid --- */
+        .privilege-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: -30px 20px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .priv-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            transition: 0.3s;
+        }
+
+        .priv-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--admin-red);
+        }
+
+        .priv-card i {
+            font-size: 1.5rem;
+            color: var(--admin-red);
+            margin-bottom: 10px;
+        }
+
+        .priv-card h4 {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .priv-card p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* --- Profile Body --- */
+        .profile-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            padding: 35px;
+            border-radius: 28px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .data-item label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #94a3b8;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .data-item span {
+            font-weight: 600;
+            color: var(--admin-dark);
+        }
+
+        /* --- Activity Heatmap --- */
+        .activity-map {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .map-box {
+            aspect-ratio: 1;
+            background: #e2e8f0;
+            border-radius: 3px;
+            transition: 0.2s;
+        }
+
+        .map-box.high {
+            background: var(--admin-red);
+        }
+
+        .map-box.med {
+            background: #fca5a5;
+        }
+
+        .btn-update {
+            display: inline-block;
+            width: 100%;
+            padding: 15px;
+            background: var(--admin-dark);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 14px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover {
+            background: var(--admin-red);
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .privilege-bar {
+                grid-template-columns: 1fr;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+
+            <div class="admin-header">
+                <div class="profile-avatar-container">
+                    <img id="admin-avatar"
+                        src="https://ui-avatars.com/api/?name=Admin&background=ef4444&color=fff&size=200"
+                        class="profile-avatar">
+                    <div class="status-dot"></div>
+                </div>
+                <div class="header-info">
+                    <h1><span id="admin-name">Rishon</span> <span class="badge-root">Root</span></h1>
+                    <p style="opacity: 0.7; font-weight: 500;">System Architect & Lead Developer</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px;"><i class="fas fa-terminal"></i> node@educore-main:
+                        ~/root</p>
+                </div>
+            </div>
+
+            <div class="privilege-bar">
+                <div class="priv-card animate-in" style="animation-delay: 0.1s;">
+                    <i class="fas fa-key"></i>
+                    <h4>Tier 1</h4>
+                    <p>ACCESS LEVEL</p>
+                </div>
+                <div class="priv-card animate-in" style="animation-delay: 0.2s;">
+                    <i class="fas fa-shield-virus"></i>
+                    <h4>Active</h4>
+                    <p>SECURITY CLEARANCE</p>
+                </div>
+                <div class="priv-card animate-in" style="animation-delay: 0.3s;">
+                    <i class="fas fa-bolt"></i>
+                    <h4>99.9%</h4>
+                    <p>UPTIME SCORE</p>
+                </div>
+            </div>
+
+            <div class="profile-sections">
+                <div class="glass-panel">
+                    <div class="section-header"><i class="fas fa-fingerprint"></i> System Identity</div>
+                    <div class="info-grid">
+                        <div class="data-item">
+                            <label>ADMIN EMAIL</label>
+                            <span id="admin-email">rishon@educore.dev</span>
+                        </div>
+                        <div class="data-item">
+                            <label>SESSION ID</label>
+                            <span>#8821-ALPHA-2026</span>
+                        </div>
+                        <div class="data-item">
+                            <label>PRIMARY IP</label>
+                            <span>192.168.1.104</span>
+                        </div>
+                        <div class="data-item">
+                            <label>LAST LOGIN</label>
+                            <span>Just Now • Kalyan, MH</span>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 40px;"><i class="fas fa-microchip"></i> Technical
+                        Stack</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span
+                            style="background: #eff6ff; color: #3b82f6; padding: 6px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;">Python/Flask</span>
+                        <span
+                            style="background: #fef2f2; color: #ef4444; padding: 6px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;">Next.js
+                            14</span>
+                        <span
+                            style="background: #f0fdf4; color: #10b981; padding: 6px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;">PostgreSQL</span>
+                        <span
+                            style="background: #faf5ff; color: #a855f7; padding: 6px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;">Vercel
+                            Ops</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel">
+                    <div class="section-header"><i class="fas fa-wave-square"></i> Activity Log</div>
+                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">System Commit History</p>
+                    <div class="activity-map">
+                        <div class="map-box high"></div>
+                        <div class="map-box med"></div>
+                        <div class="map-box"></div>
+                        <div class="map-box med"></div>
+                        <div class="map-box high"></div>
+                        <div class="map-box med"></div>
+                        <div class="map-box high"></div>
+                        <div class="map-box"></div>
+                        <div class="map-box med"></div>
+                        <div class="map-box high"></div>
+                        <div class="map-box high"></div>
+                        <div class="map-box"></div>
+                        <div class="map-box"></div>
+                        <div class="map-box med"></div>
+                        <div class="map-box"></div>
+                        <div class="map-box med"></div>
+                    </div>
+
+                    <a href="#" class="btn-update"><i class="fas fa-sliders-h"></i> System Settings</a>
+                    <a href="admin.html"
+                        style="display: block; text-align: center; margin-top: 15px; color: #64748b; text-decoration: none; font-size: 0.85rem; font-weight: 700;">
+                        <i class="fas fa-arrow-left"></i> Command Center
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Personalization logic using your profile data
+            const adminName = localStorage.getItem('userName') || "Rishon Mathai";
+            const adminEmail = localStorage.getItem('userEmail') || "rishon@educore.edu";
+
+            document.getElementById('admin-name').innerText = adminName.split(' ')[0]; // Just first name
+            document.getElementById('admin-email').innerText = adminEmail;
+
+            // Generate avatar based on name
+            document.getElementById('admin-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(adminName)}&background=ef4444&color=fff&size=200&bold=true`;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="featureSearch" placeholder="Search features...">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <span class="user-name" id="displayUserName">Loading...</span>
+                    <span class="user-role" id="displayUserRole">Student | ID: ----</span>
+                </div>
+                <a href="profile.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile"
+                        class="header-avatar">
+                </a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-banner">
+                <h1>Welcome Back, <span id="bannerUserName">User</span>! 👋</h1>
+                <p>Academic Session: 2025-26 | Role: <span id="bannerUserRole">Student</span></p>
+            </div>
+
+            <div class="feature-grid" id="featureGrid">
+                <div class="feature-card" style="--accent: #f39c12;" onclick="navigateTo('credentials')">
+                    <div class="icon-box"><i class="fas fa-key"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;"><span>Change Credentials</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #e74c3c;" onclick="navigateTo('profile-edit')">
+                    <div class="icon-box"><i class="fas fa-user-edit"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Manage Profile</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #27ae60;" onclick="navigateTo('fees')">
+                    <div class="icon-box"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Print Fee Chalan</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #2980b9;" onclick="navigateTo('notices')">
+                    <div class="icon-box"><i class="fas fa-bullhorn"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>View Notices</span></a>
+                </div>
+
+                <div class="feature-card" style="--accent: #8e44ad;" onclick="navigateTo('application')">
+                    <div class="icon-box"><i class="fas fa-edit"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Make Application</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #c0392b;" onclick="navigateTo('attendance')">
+                    <div class="icon-box"><i class="fas fa-calendar-check"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Attendance Report</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #16a085;" onclick="navigateTo('homework')">
+                    <div class="icon-box"><i class="fas fa-book-open"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Home Work & Notes</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #2c3e50;" onclick="navigateTo('syllabus')">
+                    <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Syllabus Coverage</span></a>
+                </div>
+
+                <div class="feature-card" style="--accent: #d35400;" onclick="navigateTo('timetable')">
+                    <div class="icon-box"><i class="fas fa-clock"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Class Time Table</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #7f8c8d;" onclick="navigateTo('library')">
+                    <div class="icon-box"><i class="fas fa-search"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Search Books</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #f1c40f;" onclick="navigateTo('documents')">
+                    <div class="icon-box"><i class="fas fa-folder-open"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>View Documents</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #e67e22;" onclick="navigateTo('complaints')">
+                    <div class="icon-box"><i class="fas fa-sad-tear"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Complaint Box</span></a>
+                </div>
+
+                <div class="feature-card" style="--accent: #2ecc71;" onclick="navigateTo('admission')">
+                    <div class="icon-box"><i class="fas fa-file-alt"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Admission Form</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #3498db;" onclick="navigateTo('payments')">
+                    <div class="icon-box"><i class="fas fa-credit-card"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Online Fees</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #9b59b6;" onclick="navigateTo('exam-form')">
+                    <div class="icon-box"><i class="fas fa-clipboard-list"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Examination Form</span></a>
+                </div>
+                <div class="feature-card" style="--accent: #1abc9c;" onclick="navigateTo('hall-ticket')">
+                    <div class="icon-box"><i class="fas fa-id-card"></i></div>
+                    <a href="changecredentials.html" style="text-decoration: none;">
+                        <span>Generate Ticket</span></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Fetch data from the login session
+            const savedName = localStorage.getItem('userName');
+            const savedRole = localStorage.getItem('userRole');
+            const savedID = localStorage.getItem('userID');
+
+            // 2. Safety Check: If no name is found, redirect to login
+            if (!savedName) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // 3. Update the Header (Top Right)
+            const headerName = document.getElementById('displayUserName');
+            const headerRole = document.getElementById('displayUserRole');
+
+            if (headerName) headerName.innerText = savedName.toUpperCase();
+            if (headerRole) {
+                const roleTitle = savedRole.charAt(0).toUpperCase() + savedRole.slice(1);
+                headerRole.innerText = `${roleTitle} | ID: ${savedID}`;
+            }
+
+            // 4. Update the Welcome Banner (Center)
+            const bannerName = document.getElementById('bannerUserName');
+            const bannerRole = document.getElementById('bannerUserRole');
+
+            if (bannerName) {
+                // We use the raw name here (e.g., Rishon) rather than ALL CAPS for a friendlier feel
+                bannerName.innerText = savedName;
+            }
+
+            if (bannerRole) {
+                bannerRole.innerText = savedRole.charAt(0).toUpperCase() + savedRole.slice(1);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Get the logged-in user's data from localStorage
+            const savedName = localStorage.getItem('userName');
+            const savedID = localStorage.getItem('userID');
+            const savedRole = localStorage.getItem('userRole'); // 'student', 'teacher', or 'admin'
+
+            // 2. Target the HTML elements
+            const nameElement = document.getElementById('displayUserName');
+            const roleElement = document.getElementById('displayUserRole');
+
+            // 3. Update the UI if data exists
+            if (savedName) {
+                nameElement.innerText = savedName.toUpperCase();
+            } else {
+                // Security check: if no name exists, they shouldn't be here
+                window.location.href = 'index.html';
+            }
+
+            if (savedID && savedRole) {
+                // Capitalize the first letter of the role (e.g., Student, Teacher)
+                const roleTitle = savedRole.charAt(0).toUpperCase() + savedRole.slice(1);
+                roleElement.innerText = `${roleTitle} | ID: ${savedID}`;
+            }
+        });
+    </script>
+
+    <script src="student.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Schedule | EduCore Control</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --border-subtle: rgba(226, 232, 240, 0.6);
+        }
+
+        /* --- Global Refinement --- */
+        body {
+            background: #fdfdfe;
+            /* Ultra clean background */
+        }
+
+        @keyframes revealCard {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* --- Clean Header & Filter --- */
+        .page-header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 30px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .filter-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: var(--admin-dark);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- The Master Grid --- */
+        .timetable-wrapper {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 20px;
+        }
+
+        .time-labels {
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+            /* Matches card heights */
+            padding-top: 60px;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-align: right;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .day-column-header {
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* --- Premium Class Cards --- */
+        .class-card {
+            background: white;
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            position: relative;
+            animation: revealCard 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .class-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            border-color: var(--accent);
+        }
+
+        .class-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .class-card h4 {
+            margin: 0;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--admin-dark);
+            line-height: 1.2;
+        }
+
+        .class-card .instructor {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .room-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* Color Accents */
+        .cs-track {
+            --accent: #6366f1;
+        }
+
+        .id-track {
+            --accent: #ef4444;
+        }
+
+        .fn-track {
+            --accent: #10b981;
+        }
+
+        /* --- Interactive Progress Line --- */
+        .current-time-marker {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--admin-red);
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .current-time-marker::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            background: var(--admin-red);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-terminal"></i>
+                <input type="text" id="featureSearch" placeholder="Execute command or search tools (Ctrl + /)"
+                    onkeyup="filterAdminTools()">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="ad-profile.html" style="text-decoration: none;"><span
+                            class="user-name">ADMINISTRATOR</span></a>
+                    <span class="user-role">Super User | Tier 1</span>
+                </div>
+                <a href="ad-profile.html" style="text-decoration: none;"><img
+                        src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" alt="Admin" class="header-avatar"
+                        style="border: 2px solid var(--admin-red); padding: 2px;"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="page-header">
+                <div>
+                    <a href="admin.html" class="admin-back-btn" style="text-decoration: none;"><i
+                            class="fas fa-arrow-left"></i> Exit</a>
+                    <h1 style="margin-top: 10px;">Master Schedule</h1>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn active">Week</button>
+                    <button class="filter-btn">Month</button>
+                    <button class="filter-btn">Resource View</button>
+                </div>
+            </div>
+
+            <div class="timetable-wrapper">
+                <div class="time-labels">
+                    <span>09:00 AM</span>
+                    <span>11:00 AM</span>
+                    <span>01:00 PM</span>
+                    <span>03:00 PM</span>
+                </div>
+
+                <div class="days-grid">
+                    <div class="day-col">
+                        <div class="day-column-header">MONDAY</div>
+                        <div class="class-card cs-track" style="animation-delay: 0.1s;">
+                            <h4>Advanced Python Backend</h4>
+                            <span class="instructor">Prof. Rishon S.</span>
+                            <span class="room-tag">LAB 01</span>
+                        </div>
+                        <div class="class-card fn-track" style="animation-delay: 0.2s;">
+                            <h4>Investment Banking</h4>
+                            <span class="instructor">Dr. Mehta</span>
+                            <span class="room-tag">HALL A</span>
+                        </div>
+                    </div>
+
+                    <div class="day-col">
+                        <div class="day-column-header">TUESDAY</div>
+                        <div class="class-card id-track" style="animation-delay: 0.3s;">
+                            <h4>Interior Color Theory</h4>
+                            <span class="instructor">Arch. Ananya</span>
+                            <span class="room-tag">STUDIO 2</span>
+                        </div>
+                    </div>
+
+                    <div class="day-col">
+                        <div class="day-column-header">WEDNESDAY</div>
+                        <div class="class-card cs-track" style="animation-delay: 0.4s;">
+                            <h4>Next.js Architecture</h4>
+                            <span class="instructor">Prof. Rishon S.</span>
+                            <span class="room-tag">LAB 01</span>
+                        </div>
+                    </div>
+
+                    <div class="day-col">
+                        <div class="day-column-header">THURSDAY</div>
+                        <div class="class-card id-track" style="animation-delay: 0.5s;">
+                            <h4>3D Rendering</h4>
+                            <span class="instructor">Arch. Singh</span>
+                            <span class="room-tag">STUDIO 1</span>
+                        </div>
+                    </div>
+
+                    <div class="day-col">
+                        <div class="day-column-header">FRIDAY</div>
+                        <div class="class-card fn-track" style="animation-delay: 0.6s;">
+                            <h4>Market Analysis</h4>
+                            <span class="instructor">Ms. Iyer</span>
+                            <span class="room-tag">HALL B</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Smooth Filter Toggle
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = function () {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                this.classList.add('active');
+            }
+        });
+
+        // Add a "click to detail" interaction
+        document.querySelectorAll('.class-card').forEach(card => {
+            card.onclick = function () {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    alert("Opening detailed attendance & resource logs for: " + this.querySelector('h4').innerText);
+                }, 150);
+            }
+        });
+    </script>
+</body>
+
+</html>

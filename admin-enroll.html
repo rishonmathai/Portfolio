@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Terminal | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --accent: #ef4444;
+            /* Match dashboard accent */
+        }
+
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-back-btn:hover {
+            color: var(--admin-red);
+            border-color: var(--admin-red);
+            background: #fff1f2;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.08);
+        }
+
+        .admin-back-btn i {
+            font-size: 0.75rem;
+        }
+
+        /* Enrollment-Specific Layout */
+        .enroll-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .enroll-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Form Styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--admin-red);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        /* Live Preview Card (Glassmorphism) */
+        .preview-sticky {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .id-card-preview {
+            background: var(--admin-dark);
+            color: white;
+            padding: 30px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .id-card-preview::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
+        }
+
+        .btn-finalize {
+            width: 100%;
+            padding: 15px;
+            background: var(--admin-red);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-finalize:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        @media (max-width: 1100px) {
+            .enroll-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-sticky {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-terminal"></i>
+                <input type="text" id="featureSearch" placeholder="Execute command or search tools (Ctrl + /)"
+                    onkeyup="filterAdminTools()">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="ad-profile.html" style="text-decoration: none;"><span
+                            class="user-name">ADMINISTRATOR</span></a>
+                    <span class="user-role">Super User | Tier 1</span>
+                </div>
+                <a href="ad-profile.html" style="text-decoration: none;"><img
+                        src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" alt="Admin" class="header-avatar"
+                        style="border: 2px solid var(--admin-red); padding: 2px;"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);">
+                <a href="admin.html" class="admin-back-btn">
+                    <i class="fas fa-chevron-left"></i> Back to Console
+                </a>
+
+                <h1 style="color: var(--admin-dark); margin-top: 15px;">Student Enrollment</h1>
+                <p><i class="fas fa-user-plus" style="color: var(--admin-red);"></i> Provisioning new student
+                    credentials</p>
+            </div>
+
+            <div class="enroll-wrapper">
+                <div class="enroll-card">
+                    <form id="enrollForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" id="in-fname" placeholder="e.g. Rahul" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="in-lname" placeholder="e.g. Sharma" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Official Email</label>
+                                <input type="email" id="in-email" placeholder="student@educore.edu" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Academic Program</label>
+                                <select id="in-program">
+                                    <option>BCA - Computer Applications</option>
+                                    <option>B.Arch - Architecture</option>
+                                    <option>B.Com - Finance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Admission Year</label>
+                                <input type="number" value="2026" readonly>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-finalize">Confirm & Enroll</button>
+                    </form>
+                </div>
+
+                <div class="preview-sticky">
+                    <div class="id-card-preview">
+                        <span
+                            style="font-size: 0.6rem; font-weight: 800; color: var(--admin-red); letter-spacing: 2px;">PREVIEW
+                            GENERATED ID</span>
+                        <h2 id="view-name" style="margin: 15px 0 5px 0;">New Applicant</h2>
+                        <p id="view-email" style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">waiting for
+                            data...</p>
+
+                        <div
+                            style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; font-size: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>STATUS</span>
+                                <span style="color: #22c55e;">PENDING</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>TIER</span>
+                                <span>Standard Access</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Synchronize Preview
+        const fName = document.getElementById('in-fname');
+        const lName = document.getElementById('in-lname');
+        const email = document.getElementById('in-email');
+
+        const updatePreview = () => {
+            document.getElementById('view-name').innerText = `${fName.value} ${lName.value}` || 'New Applicant';
+            document.getElementById('view-email').innerText = email.value || 'waiting for data...';
+        };
+
+        [fName, lName, email].forEach(el => el.addEventListener('input', updatePreview));
+
+        function handleLogout() {
+            if (confirm("Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

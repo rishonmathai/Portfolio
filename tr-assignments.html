@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Assignments | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --tr-warning: #f59e0b;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .assignment-main {
+            max-width: 100%;
+        }
+
+        h1 {
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Create Form --- */
+        .create-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-weight: 600;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-post {
+            background: var(--tr-primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        /* --- Submissions List --- */
+        .submission-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sub-info h4 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .sub-info p {
+            margin: 4px 0 0 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .btn-review {
+            background: #eef2ff;
+            color: var(--tr-primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* --- Sidebar Right --- */
+        .right-panel h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="assignment-main">
+            <h1>Assignments</h1>
+
+            <div class="create-card">
+                <h3 style="margin-top:0; font-weight: 800;">Create New Assignment</h3>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="task-title" placeholder="e.g., Flask Authentication System">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Class</label>
+                        <select>
+                            <option>SY BCA - Div B</option>
+                            <option>TY BCA - Div A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Deadline</label>
+                        <input type="date" id="deadline">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Instructions</label>
+                    <textarea id="task-desc" rows="4"
+                        placeholder="Mention requirements and submission format..."></textarea>
+                </div>
+                <button class="btn-post" onclick="postAssignment()">Post to Class</button>
+            </div>
+
+            <h3 style="font-weight: 800;">Recent Submissions</h3>
+            <div id="submissions-container">
+                <div class="submission-card">
+                    <div class="sub-info">
+                        <h4>Aditya Singh</h4>
+                        <p>Project: Flask Login API • Submitted 2h ago</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="badge">Pending</span>
+                        <button class="btn-review" onclick="reviewSub('Aditya')">Review</button>
+                    </div>
+                </div>
+
+                <div class="submission-card">
+                    <div class="sub-info">
+                        <h4>Sneha Mishra</h4>
+                        <p>Project: Flask Login API • Submitted 5h ago</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="badge">Pending</span>
+                        <button class="btn-review" onclick="reviewSub('Sneha')">Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="create-card" style="padding: 25px;">
+                <h3>Status Overview</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted);">Active Tasks</span>
+                    <span style="font-weight: 800; color: var(--tr-primary);">04</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted);">Ungraded</span>
+                    <span style="font-weight: 800; color: var(--tr-warning);">12</span>
+                </div>
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+                <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">
+                    <i class="fas fa-lightbulb" style="color: var(--tr-warning);"></i>
+                    Tip: Use the "Review" button to jump directly to the grading sheet for that student.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trName = localStorage.getItem('userName') || "Rishon";
+            document.getElementById('tr-name-sidebar').innerText = "Prof. " + trName;
+            document.getElementById('tr-avatar-small').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+
+            // Set default deadline to 1 week from now
+            const today = new Date();
+            today.setDate(today.getDate() + 7);
+            document.getElementById('deadline').valueAsDate = today;
+        });
+
+        function postAssignment() {
+            const title = document.getElementById('task-title').value;
+            if (!title) {
+                alert("Please enter an assignment title.");
+                return;
+            }
+            alert("Assignment '" + title + "' has been posted to the Student Feed!");
+            // Reset form
+            document.getElementById('task-title').value = "";
+            document.getElementById('task-desc').value = "";
+        }
+
+        function reviewSub(name) {
+            alert("Opening submission for " + name + "...");
+            // Link to your grades page
+            window.location.href = 'tr-grades.html';
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

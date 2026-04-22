@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Specific enhancements for Teacher Dashboard */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #f1f5f9;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            width: 55px;
+            height: 55px;
+            background: var(--accent);
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover .icon-box {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card span {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        /* Search Highlight Effect */
+        .hidden-card {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="featureSearch" placeholder="Search faculty tools..." onkeyup="searchTools()">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="tr-profile.html" style="text-decoration: none;"><span class="user-name" id="nav-teacher-name">PROF. MATHAI</span>
+                    <span class="user-role" id="nav-teacher-id">Faculty | ID: T-8821</span></a>
+                </div>
+                <a href="tr-profile.html"><img src="https://cdn-icons-png.flaticon.com/512/1995/1995539.png" alt="Profile" class="header-avatar"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container" id="mainDashboard">
+            <div class="welcome-banner">
+                <h1 id="welcome-msg">Welcome, Professor!</h1>
+                <p>IT Department | Academic Year 2026-27</p>
+            </div>
+
+            <div class="feature-grid" id="featureGrid">
+                <div class="feature-card" style="--accent: #2ecc71;" onclick="navTo('tr-attendance.html')">
+                    <div class="icon-box"><i class="fas fa-user-check"></i></div>
+                    <span>Mark Attendance</span>
+                </div>
+                <div class="feature-card" style="--accent: #3498db;" onclick="navTo('tr-grades.html')">
+                    <div class="icon-box"><i class="fas fa-award"></i></div>
+                    <span>Upload Grades</span>
+                </div>
+                <div class="feature-card" style="--accent: #9b59b6;" onclick="navTo('tr-assignments.html')">
+                    <div class="icon-box"><i class="fas fa-tasks"></i></div>
+                    <span>Assignments</span>
+                </div>
+                <div class="feature-card" style="--accent: #f1c40f;" onclick="navTo('tr-materials.html')">
+                    <div class="icon-box"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <span>Post Materials</span>
+                </div>
+
+                <div class="feature-card" style="--accent: #e67e22;" onclick="navTo('tr-exams.html')">
+                    <div class="icon-box"><i class="fas fa-file-signature"></i></div>
+                    <span>Exam Duties</span>
+                </div>
+                <div class="feature-card" style="--accent: #1abc9c;" onclick="navTo('tr-students.html')">
+                    <div class="icon-box"><i class="fas fa-address-book"></i></div>
+                    <span>Student Directory</span>
+                </div>
+                <div class="feature-card" style="--accent: #e74c3c;" onclick="navTo('tr-leave.html')">
+                    <div class="icon-box"><i class="fas fa-envelope-open-text"></i></div>
+                    <span>Leave Request</span>
+                </div>
+                <div class="feature-card" style="--accent: #34495e;" onclick="navTo('tr-syllabus.html')">
+                    <div class="icon-box"><i class="fas fa-book-reader"></i></div>
+                    <span>Syllabus Tracker</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Dynamic Data Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = localStorage.getItem('userName') || "Prof. Mathai";
+            const id = localStorage.getItem('userID') || "T-8821";
+
+            document.getElementById('nav-teacher-name').innerText = name.toUpperCase();
+            document.getElementById('nav-teacher-id').innerText = `Faculty | ID: ${id}`;
+            document.getElementById('welcome-msg').innerText = `Welcome, ${name.split(' ')[0]}!`;
+        });
+
+        // 2. Real-time Search Function
+        function searchTools() {
+            const query = document.getElementById('featureSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.feature-card');
+
+            cards.forEach(card => {
+                const text = card.querySelector('span').innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove('hidden-card');
+                } else {
+                    card.classList.add('hidden-card');
+                }
+            });
+        }
+
+        // 3. Smooth Navigation
+        function navTo(url) {
+            const container = document.getElementById('mainDashboard');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(15px)';
+            container.style.transition = 'all 0.3s ease';
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // 4. Logout Logic
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

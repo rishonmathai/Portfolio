@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | EduCore Control</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            background: #fafafa;
+            transform: translateY(-5px);
+        }
+
+        .hidden-tool {
+            display: none !important;
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-terminal"></i>
+                <input type="text" id="featureSearch" placeholder="Execute command or search tools (Ctrl + /)"
+                    onkeyup="filterAdminTools()">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="ad-profile.html" style="text-decoration: none;"><span
+                            class="user-name">ADMINISTRATOR</span></a>
+                    <span class="user-role">Super User | Tier 1</span>
+                </div>
+                <a href="ad-profile.html" style="text-decoration: none;"><img
+                        src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" alt="Admin" class="header-avatar"
+                        style="border: 2px solid var(--admin-red); padding: 2px;"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);">
+                <h1 style="color: var(--admin-dark);">Control Center</h1>
+                <p>
+                    <span class="system-status-dot"></span> System: <strong>Online</strong>
+                    <span style="margin: 0 15px; color: #cbd5e1;">|</span>
+                    <i class="fas fa-microchip"></i> CPU: <span id="cpu-load">14%</span>
+                    <span style="margin: 0 15px; color: #cbd5e1;">|</span>
+                    <i class="fas fa-users"></i> Users: 412
+                </p>
+            </div>
+
+            <div class="feature-grid" id="featureGrid">
+                <div class="feature-card" style="--accent: #6366f1;" onclick="navTo('admin-enroll.html')">
+                    <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+                    <span>Enroll Student</span>
+                </div>
+                <div class="feature-card" style="--accent: #8b5cf6;" onclick="navTo('admin-faculty.html')">
+                    <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <span>Appoint Faculty</span>
+                </div>
+                <div class="feature-card" style="--accent: #ec4899;" onclick="navTo('admin-roles.html')">
+                    <div class="icon-box"><i class="fas fa-user-shield"></i></div>
+                    <span>Role Permissions</span>
+                </div>
+                <div class="feature-card" style="--accent: #f43f5e;" onclick="navTo('admin-access.html')">
+                    <div class="icon-box"><i class="fas fa-user-slash"></i></div>
+                    <span>Access Control</span>
+                </div>
+
+                <div class="feature-card" style="--accent: #f59e0b;" onclick="navTo('admin-timetable.html')">
+                    <div class="icon-box"><i class="fas fa-calendar-check"></i></div>
+                    <span>Master Schedule</span>
+                </div>
+                <div class="feature-card" style="--accent: #10b981;" onclick="navTo('admin-fees.html')">
+                    <div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
+                    <span>Fee Structures</span>
+                </div>
+                <div class="feature-card" style="--accent: #06b6d4;" onclick="navTo('admin-exams.html')">
+                    <div class="icon-box"><i class="fas fa-microchip"></i></div>
+                    <span>Exam Controller</span>
+                </div>
+                <div class="feature-card" style="--accent: #3b82f6;" onclick="navTo('admin-broadcast.html')">
+                    <div class="icon-box"><i class="fas fa-broadcast-tower"></i></div>
+                    <span>Global Notice</span>
+                </div>
+
+                <div class="feature-card" style="--accent: #64748b;" onclick="navTo('admin-backup.html')">
+                    <div class="icon-box"><i class="fas fa-database"></i></div>
+                    <span>Database Backup</span>
+                </div>
+                <div class="feature-card" style="--accent: #0f172a;" onclick="navTo('admin-terminal.html')">
+                    <div class="icon-box"><i class="fas fa-code"></i></div>
+                    <span>SQL Terminal</span>
+                </div>
+                <div class="feature-card" style="--accent: #7c2d12;" onclick="navTo('admin-audit.html')">
+                    <div class="icon-box"><i class="fas fa-file-contract"></i></div>
+                    <span>Audit Reports</span>
+                </div>
+                <div class="feature-card" style="--accent: #4338ca;" onclick="navTo('admin-tickets.html')">
+                    <div class="icon-box"><i class="fas fa-ticket-alt"></i></div>
+                    <span>Helpdesk Queue</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Tool Filtering
+        function filterAdminTools() {
+            const query = document.getElementById('featureSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.feature-card');
+
+            cards.forEach(card => {
+                const name = card.querySelector('span').innerText.toLowerCase();
+                card.classList.toggle('hidden-tool', !name.includes(query));
+            });
+        }
+
+        // 2. Navigation with Fade
+        function navTo(url) {
+            document.querySelector('.dashboard-container').style.opacity = '0';
+            document.querySelector('.dashboard-container').style.transform = 'scale(0.98)';
+            setTimeout(() => window.location.href = url, 200);
+        }
+
+        // 3. Logout
+        function handleLogout() {
+            if (confirm("CRITICAL: Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 4. Simulated Load Monitor
+        setInterval(() => {
+            const load = Math.floor(Math.random() * (18 - 12 + 1)) + 12;
+            document.getElementById('cpu-load').innerText = `${load}%`;
+        }, 3000);
+    </script>
+</body>
+
+</html>

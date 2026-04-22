@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Plan | EduCore Faculty</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        /* --- Sidebar Integration --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+        }
+
+        .nav-item {
+            padding: 14px 18px; border-radius: 12px;
+            color: var(--text-muted); text-decoration: none;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 8px; font-weight: 700;
+        }
+
+        .nav-item.active { background: #eef2ff; color: var(--tr-primary); }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            padding: 50px;
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .date-display h1 { font-size: 2rem; font-weight: 800; margin: 0; color: var(--text-dark); }
+        .date-display p { color: var(--tr-primary); font-weight: 700; margin: 5px 0 0 0; }
+
+        /* --- Day Selector --- */
+        .day-picker {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .day-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .day-btn.active { background: var(--tr-primary); color: white; }
+
+        /* --- Timeline Layout --- */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+
+        .lecture-slot {
+            display: flex;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-label {
+            width: 80px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-top: 15px;
+            text-align: right;
+        }
+
+        .lecture-card {
+            flex: 1;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .lecture-card.current {
+            border-left: 6px solid var(--tr-primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+        }
+
+        .lecture-card.completed { opacity: 0.7; background: #f1f5f9; }
+
+        .lecture-info h3 { margin: 0; font-size: 1.1rem; font-weight: 800; }
+        .lecture-info p { margin: 5px 0 0 0; font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+
+        .topic-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 12px;
+            background: #eef2ff;
+            color: var(--tr-primary);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-pill {
+            padding: 6px 15px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .status-live { background: #dcfce7; color: #15803d; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="schedule-header">
+            <div class="date-display">
+                <p id="current-day-name">WEDNESDAY</p>
+                <h1 id="current-full-date">22nd April, 2026</h1>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-weight: 700; color: var(--text-muted); font-size: 0.8rem;">DAILY PROGRESS</span>
+                <div style="width: 150px; height: 8px; background: #e2e8f0; border-radius: 10px; margin-top: 8px;">
+                    <div style="width: 60%; height: 100%; background: var(--tr-primary); border-radius: 10px;"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="day-picker">
+            <button class="day-btn">MON</button>
+            <button class="day-btn">TUE</button>
+            <button class="day-btn active">WED</button>
+            <button class="day-btn">THU</button>
+            <button class="day-btn">FRI</button>
+            <button class="day-btn">SAT</button>
+        </div>
+
+        <div class="timeline">
+            <div class="lecture-slot">
+                <div class="time-label">09:00 AM</div>
+                <div class="lecture-card completed">
+                    <div class="lecture-info">
+                        <h3>Database Management Systems</h3>
+                        <p>FY BCA - Div A • Lab Session</p>
+                        <div class="topic-badge"><i class="fas fa-check-circle"></i> SQL Joins & Subqueries</div>
+                    </div>
+                    <span class="status-pill" style="background: #e2e8f0;">Ended</span>
+                </div>
+            </div>
+
+            <div class="lecture-slot">
+                <div class="time-label">11:00 AM</div>
+                <div class="lecture-card current">
+                    <div class="lecture-info">
+                        <h3>Web Development</h3>
+                        <p>SY BCA - Div B • Theory Room 402</p>
+                        <div class="topic-badge">Current Topic: Next.js API Routes</div>
+                    </div>
+                    <span class="status-pill status-live">Live Now</span>
+                </div>
+            </div>
+
+            <div class="lecture-slot">
+                <div class="time-label">02:00 PM</div>
+                <div class="lecture-card">
+                    <div class="lecture-info">
+                        <h3>Computer Architecture</h3>
+                        <p>FY BCA - Div A • Room 105</p>
+                        <div class="topic-badge" style="background: #f1f5f9; color: #64748b;">Next: Pipeline Processing</div>
+                    </div>
+                    <button style="background: none; border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 8px; font-weight: 700; cursor: pointer;">View Plan</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple logic to toggle days for the UI
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelector('.day-btn.active').classList.remove('active');
+                this.classList.add('active');
+                // In a real app, you'd fetch that day's schedule here
+            });
+        });
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+</html>

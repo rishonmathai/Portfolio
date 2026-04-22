@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Fee Chalan | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --success-green: #27ae60;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Chalan Preview Card */
+        .chalan-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .chalan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .institute-info h2 {
+            margin: 0;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        .chalan-badge {
+            background: #f0fdf4;
+            color: var(--success-green);
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .fee-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .fee-details-table th {
+            text-align: left;
+            color: #64748b;
+            font-size: 0.85rem;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .fee-details-table td {
+            padding: 15px 12px;
+            color: var(--text-dark);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .total-row {
+            background: #f8fafc;
+            font-weight: 700 !important;
+            font-size: 1.1rem;
+        }
+
+        .btn-print {
+            background: var(--success-green);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            background: #219150;
+            transform: translateY(-2px);
+        }
+
+        /* Print-Only Styles */
+        @media print {
+            .sidebar, .btn-print, .back-link {
+                display: none !important;
+            }
+            .main-wrapper {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+            .chalan-card {
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+                margin: 0 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper { margin-left: 0; padding: 20px; }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+    <div class="content-limit">
+        <div class="page-header-alt" style="margin-bottom: 20px;">
+            <a href="student.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="chalan-card" id="chalanArea">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 5rem; color: rgba(0,0,0,0.03); font-weight: 800; pointer-events: none; width: 100%; text-align: center;">
+                EDUCORE SYSTEMS
+            </div>
+
+            <div class="chalan-header">
+                <div class="institute-info">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-university" style="font-size: 1.8rem; color: var(--primary-blue);"></i>
+                        <h2>EduCore University Systems</h2>
+                    </div>
+                    <p style="margin: 5px 0; color: #64748b; font-weight: 500;">Navi Mumbai Campus | Academic Year 2026-27</p>
+                </div>
+                <div style="text-align: right;">
+                    <div class="chalan-badge">Pending Payment</div>
+                    <p id="gen-date" style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px;"></p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; margin-bottom: 30px; position: relative;">
+                <div>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem;">Student Full Name</small>
+                        <strong id="display-name" style="font-size: 1.2rem; display: block; color: var(--text-dark);">---</strong>
+                    </div>
+                    <div style="display: flex; gap: 30px;">
+                        <div>
+                            <small style="color: #64748b; text-transform: uppercase; font-size: 0.7rem;">Application ID</small>
+                            <strong id="display-id" style="display: block;">---</strong>
+                        </div>
+                        <div>
+                            <small style="color: #64748b; text-transform: uppercase; font-size: 0.7rem;">Class / Div</small>
+                            <strong id="display-class" style="display: block;">---</strong>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-left: 1px solid var(--border-color); padding-left: 20px;">
+                    <div style="margin-bottom: 10px;">
+                        <small style="color: #64748b; display: block; font-size: 0.7rem;">CHALAN NO.</small>
+                        <strong style="color: var(--primary-blue);">EC/2026/7742</strong>
+                    </div>
+                    <div>
+                        <small style="color: #64748b; display: block; font-size: 0.7rem;">DUE DATE</small>
+                        <strong style="color: #e74c3c;">15 May 2026</strong>
+                    </div>
+                </div>
+            </div>
+
+            <table class="fee-details-table">
+                <thead>
+                    <tr>
+                        <th>Fee Particulars</th>
+                        <th style="text-align: right;">Amount (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tuition Fee (Semester IV)</td>
+                        <td style="text-align: right;">₹ 45,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>Laboratory & Library Charges</td>
+                        <td style="text-align: right;">₹ 5,500.00</td>
+                    </tr>
+                    <tr>
+                        <td>Student Activity & Gymkhana</td>
+                        <td style="text-align: right;">₹ 2,000.00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td style="border-bottom: none;">Total Payable Amount</td>
+                        <td style="text-align: right; border-bottom: none; color: var(--primary-blue);">₹ 52,500.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+                <div style="font-size: 0.75rem; color: #64748b; max-width: 60%;">
+                    <p><strong>Note:</strong> Payment can be made via Online Portal or at the University Cash Counter. Please keep this copy for your records.</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 150px; border-bottom: 1px solid #000; margin-bottom: 5px;"></div>
+                    <small style="color: #1e293b; font-weight: 600;">Accounts Officer</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; justify-content: center;" class="no-print">
+            <button class="btn-print" onclick="window.print()">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+            <button class="btn-print" style="background: var(--primary-blue);" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Chalan
+            </button>
+        </div>
+    </div>
+</main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        // Fetch data from localStorage
+        const savedName = localStorage.getItem('userName') || "Rishon Mathai";
+        const savedID = localStorage.getItem('userID') || "2025PC2220";
+        const savedClass = localStorage.getItem('userClass') || "SYBCA - A";
+
+        // Map to UI
+        document.getElementById('display-name').innerText = savedName.toUpperCase();
+        document.getElementById('display-id').innerText = savedID;
+        document.getElementById('display-class').innerText = savedClass;
+
+        // Set Generation Date
+        const now = new Date();
+        document.getElementById('gen-date').innerText = "Generated: " + now.toLocaleDateString() + " | " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    });
+
+    function handleLogout() {
+        localStorage.clear();
+        window.location.href = 'index.html';
+    }
+    </script>
+    <script src="student.js"></script>
+</body>
+</html>

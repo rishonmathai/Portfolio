@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | EduCore</title>
+    <link rel="stylesheet" href="auth-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="theme-manager.js"></script>
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+        <div class="brand-side">
+            <div class="overlay">
+                <i class="fas fa-university logo-icon"></i>
+                <h1>EduCore Systems</h1>
+                <p>Advanced Institutional Management Framework</p>
+                <div class="feature-list">
+                    <div class="f-item"><i class="fas fa-check-circle"></i> Secure Data Encryption</div>
+                    <div class="f-item"><i class="fas fa-check-circle"></i> Multi-Role Access Control</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-side">
+            <div class="form-content" id="formContent">
+                <h2 id="authTitle">Sign In</h2>
+                <p id="authSubtitle">Enter your account details to continue</p>
+
+                <form id="mainAuthForm" onsubmit="handleInitialAuth(event)">
+                    
+                    <div class="input-group" id="nameGroup" style="display: none;">
+                        <label>Full Name</label>
+                        <input type="text" id="loginName" placeholder="John Doe">
+                    </div>
+
+                    <div class="input-group" id="phoneGroup" style="display: none;">
+                        <label>Phone Number</label>
+                        <input type="tel" id="loginPhone" placeholder="+91 00000 00000">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="name@college.edu" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Sign In</button>
+
+                    <div class="divider"><span>OR</span></div>
+
+                    <button type="button" class="btn-google">
+                        <img src="Google_logo.webp" alt="Google" width="20px">
+                        Continue with Google
+                    </button>
+                </form>
+
+                <p class="toggle-text">
+                    <span id="toggleMsg">New to the portal?</span>
+                    <a href="javascript:void(0)" onclick="toggleAuth()">Create Account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth-login.js"></script>
+</body>
+
+</html>

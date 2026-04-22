@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Announcements | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            /* Professional Indigo */
+            --tr-secondary: #0d9488;
+            /* Teal for success/actions */
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar Integration --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            color: var(--tr-primary);
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: var(--tr-primary);
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .badge {
+            background: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* --- Announcement Composer --- */
+        .composer-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .composer-header {
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: 0.3s;
+            background: #fcfdfe;
+        }
+
+        textarea:focus {
+            border-color: var(--tr-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .btn-post {
+            background: var(--tr-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* --- Notification Items --- */
+        .notif-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 20px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .notif-card:hover {
+            border-color: var(--tr-primary);
+            background: #fcfdff;
+        }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .icon-staff {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .icon-admin {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .notif-info h4 {
+            margin: 0 0 6px 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .notif-info p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .notif-meta {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 600;
+            display: flex;
+            gap: 15px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+
+            .sidebar span,
+            .nav-section {
+                display: none;
+            }
+
+            .main-wrapper {
+                margin-left: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+
+            <div class="composer-card">
+                <div class="composer-header">
+                    <i class="fas fa-pen-nib" style="color: var(--tr-primary);"></i>
+                    <span>Broadcast New Announcement</span>
+                </div>
+                <textarea id="announcement-text" rows="3"
+                    placeholder="Share updates, assignments or exam alerts with your students..."></textarea>
+                <div class="composer-actions">
+                    <div style="display: flex; gap: 10px;">
+                        <button
+                            style="background: #f1f5f9; border:none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">
+                            <i class="fas fa-paperclip"></i> Attach
+                        </button>
+                        <select
+                            style="background: #f1f5f9; border:none; padding: 8px 12px; border-radius: 8px; font-weight: 700; color: var(--text-muted); font-family: inherit;">
+                            <option>All Classes</option>
+                            <option>FY BCA - Div A</option>
+                            <option>SY BCA - Div B</option>
+                        </select>
+                    </div>
+                    <button class="btn-post" onclick="postAnnouncement()">Post to Feed</button>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-weight: 800; font-size: 1.2rem;">Recent Notifications</h3>
+                <button onclick="markAllRead()"
+                    style="background: none; border: none; color: var(--tr-primary); font-weight: 700; cursor: pointer; font-size: 0.85rem;">Mark
+                    all as read</button>
+            </div>
+
+            <div id="notif-feed">
+                <div class="notif-card">
+                    <div class="icon-circle icon-staff">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="notif-info">
+                        <h4>Staff Meeting: Curriculum Review</h4>
+                        <p>Principal has called for a mandatory staff meeting regarding the new 2026 syllabus updates in
+                            the main conference hall.</p>
+                        <div class="notif-meta">
+                            <span><i class="far fa-clock"></i> 10:30 AM Today</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Hall A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card">
+                    <div class="icon-circle icon-admin">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notif-info">
+                        <h4>Internal Marks Submission Deadline</h4>
+                        <p>All faculty members must upload Semester IV internal assessment scores to the EduCore portal
+                            before Friday midnight.</p>
+                        <div class="notif-meta">
+                            <span><i class="far fa-calendar"></i> Due: 24th April</span>
+                            <span style="color: #ef4444;">High Priority</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function postAnnouncement() {
+            const text = document.getElementById('announcement-text').value;
+            if (!text) return alert("Please type something first!");
+
+            const feed = document.getElementById('notif-feed');
+            const newCard = document.createElement('div');
+            newCard.className = 'notif-card';
+            newCard.style.borderLeft = "4px solid var(--tr-primary)";
+            newCard.innerHTML = `
+                <div class="icon-circle" style="background: #eef2ff; color: var(--tr-primary);">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="notif-info">
+                    <h4>Broadcasted to Students</h4>
+                    <p>${text}</p>
+                    <div class="notif-meta">
+                        <span><i class="far fa-clock"></i> Just now</span>
+                        <span style="color: var(--tr-secondary);">Sent Successfully</span>
+                    </div>
+                </div>
+            `;
+            feed.prepend(newCard);
+            document.getElementById('announcement-text').value = '';
+        }
+
+        function markAllRead() {
+            alert("All notifications updated.");
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

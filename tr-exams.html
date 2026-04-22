@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams & Schedules | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --tr-danger: #ef4444;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+        }
+
+        .exam-header {
+            background: linear-gradient(135deg, var(--tr-primary), #4f46e5);
+            border-radius: 24px;
+            padding: 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- Exam Cards --- */
+        .schedule-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-card.completed {
+            opacity: 0.6;
+            filter: grayscale(1);
+        }
+
+        .date-box {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .date-box b {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--tr-primary);
+        }
+
+        .date-box span {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .exam-info {
+            flex: 1;
+        }
+
+        .exam-info h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .progress-bar-container {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--tr-success);
+            width: 0%;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+
+        /* --- Tool Cards --- */
+        .tool-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .tool-btn {
+            width: 100%;
+            text-align: left;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #f1f5f9;
+            background: #f8fafc;
+            margin-bottom: 10px;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #eef2ff;
+            color: var(--tr-primary);
+            border-color: var(--tr-primary);
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="exam-header">
+            <div>
+                <h2 style="margin:0; font-weight: 800;">Mid-Term Finals 2026</h2>
+                <p id="next-subject" style="margin:5px 0; opacity: 0.9; font-weight: 600;">Next Exam: Python Programming
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">Time Remaining</span>
+                <div id="live-timer" style="font-size: 1.8rem; font-weight: 900;">00d : 00h : 00m : 00s</div>
+            </div>
+        </div>
+
+        <div class="grid-layout">
+            <div class="main-column">
+                <h3 style="font-weight: 800; margin-bottom: 20px;">Upcoming Schedule</h3>
+
+                <div id="exam-list">
+                    <div class="schedule-card" id="exam-1">
+                        <div class="date-box"><b>24</b><span>Apr</span></div>
+                        <div class="exam-info">
+                            <h4>Python Programming (Theory)</h4>
+                            <p>SY BCA • 10:00 AM • Room 402</p>
+                            <div class="progress-bar-container" id="p-bar-1">
+                                <div class="progress-fill" id="fill-1"></div>
+                            </div>
+                        </div>
+                        <button class="tool-btn" style="width: auto; margin:0;" onclick="uploadQP(1)">
+                            <i class="fas fa-upload"></i> <span id="btn-text-1">Upload QP</span>
+                        </button>
+                    </div>
+
+                    <div class="schedule-card" id="exam-2">
+                        <div class="date-box"><b>26</b><span>Apr</span></div>
+                        <div class="exam-info">
+                            <h4>Web Technologies (Lab)</h4>
+                            <p>SY BCA • 09:00 AM • Lab 2</p>
+                            <div class="progress-bar-container" id="p-bar-2">
+                                <div class="progress-fill" id="fill-2"></div>
+                            </div>
+                        </div>
+                        <button class="tool-btn" style="width: auto; margin:0;" onclick="uploadQP(2)">
+                            <i class="fas fa-upload"></i> <span id="btn-text-2">Upload QP</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-column">
+                <h3 style="font-weight: 800; margin-bottom: 20px;">Exam Control</h3>
+                <div class="tool-card">
+                    <button class="tool-btn" onclick="generateSeating()"><i class="fas fa-th"></i> Seating
+                        Generator</button>
+                    <button class="tool-btn" onclick="toggleExamStatus()"><i class="fas fa-power-off"></i> <span
+                            id="status-toggle">Start Exam Mode</span></button>
+                    <button class="tool-btn" onclick="alert('Digital Attendance Sheet is now ready for Room 402.')"><i
+                            class="fas fa-clipboard-check"></i> Proctor Sheet</button>
+                </div>
+
+                <div class="tool-card" id="proctor-duty-card" style="border-left: 5px solid var(--tr-primary);">
+                    <h4 style="margin:0 0 5px 0;">Proctor Alert</h4>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">You are Lead Proctor for
+                        <b>Python</b> on 24th April.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Core Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle User Profile Sync
+            const trName = localStorage.getItem('userName') || "Rishon";
+            const nameDisplay = document.getElementById('tr-name-sidebar');
+            const avatarDisplay = document.getElementById('tr-avatar-small');
+
+            if (nameDisplay) nameDisplay.innerText = "Prof. " + trName;
+            if (avatarDisplay) {
+                avatarDisplay.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+            }
+
+            // Start the Timer
+            initTimer();
+        });
+
+        // 2. Real-Time Countdown Function
+        function initTimer() {
+            const timerElement = document.getElementById('live-timer');
+            if (!timerElement) return;
+
+            // Target: April 24, 2026 at 10:00 AM
+            const targetDate = new Date("2026-04-24T10:00:00").getTime();
+
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    timerElement.innerText = "EXAM IN PROGRESS";
+                    timerElement.style.color = "#ff4d4d";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerElement.innerText =
+                    `${String(days).padStart(2, '0')}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`;
+            };
+
+            // Run once immediately so there is no 1-second delay
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // 3. Question Paper Upload Logic
+        function uploadQP(id) {
+            const btnText = document.getElementById(`btn-text-${id}`);
+            const pBar = document.getElementById(`p-bar-${id}`);
+            const fill = document.getElementById(`fill-${id}`);
+            const btn = btnText.parentElement;
+
+            if (btn.disabled) return;
+
+            btn.disabled = true;
+            btnText.innerText = "Encrypting...";
+            pBar.style.display = "block";
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    btnText.innerText = "QP Uploaded";
+                    btn.style.background = "var(--tr-success)";
+                    btn.style.color = "white";
+                    btn.style.borderColor = "var(--tr-success)";
+                }
+                fill.style.width = progress + "%";
+            }, 200);
+        }
+
+        // 4. Seating Plan Generator
+        function generateSeating() {
+            const room = prompt("Enter Room Number for randomization:");
+            if (!room) return;
+
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert(`SUCCESS: Randomized seating plan for Room ${room} has been published to Student Portals.`);
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 1500);
+        }
+
+        // 5. Exam Mode Toggle
+        let examMode = false;
+        function toggleExamStatus() {
+            examMode = !examMode;
+            const statusBtn = document.getElementById('status-toggle');
+            const header = document.querySelector('.exam-header');
+
+            if (examMode) {
+                statusBtn.innerText = "End Exam Mode";
+                statusBtn.parentElement.style.background = "var(--tr-danger)";
+                statusBtn.parentElement.style.color = "white";
+                header.style.background = "linear-gradient(135deg, #ef4444, #991b1b)";
+                alert("SECURITY ALERT: Exam mode activated. Student portals are now restricted.");
+            } else {
+                statusBtn.innerText = "Start Exam Mode";
+                statusBtn.parentElement.style.background = "#f8fafc";
+                statusBtn.parentElement.style.color = "var(--text-dark)";
+                header.style.background = "linear-gradient(135deg, var(--tr-primary), #4f46e5)";
+            }
+        }
+
+        // 6. Logout Logic
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root Terminal | EduCore Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+        :root {
+            --accent: #ef4444;
+            --bg-deep: #020617;
+            --sidebar-bg: #0f172a;
+            --term-bg: rgba(11, 15, 26, 0.95);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --term-green: #10b981;
+            --term-blue: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Refined Sidebar --- */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 50px;
+        }
+
+        .sidebar-logo i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .sidebar-logo span {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-section {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            margin: 20px 0 10px 10px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-dim);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent);
+        }
+
+        /* --- Main Layout --- */
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+
+        header p {
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* --- Glass Terminal Window --- */
+        .terminal-window {
+            flex: 1;
+            background: var(--term-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .terminal-header {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 30px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-y: auto;
+            color: #cbd5e1;
+        }
+
+        .output {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prompt {
+            color: var(--term-green);
+            font-weight: 600;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            flex: 1;
+            caret-color: var(--term-green);
+        }
+
+        /* Styling for specific terminal text */
+        .stat-up {
+            color: var(--term-green);
+        }
+
+        .stat-warn {
+            color: #f59e0b;
+        }
+
+        .stat-cmd {
+            color: var(--term-blue);
+            font-weight: bold;
+        }
+
+        /* Custom Scrollbar */
+        .terminal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red); border-radius: 10px; padding: 2px 5px;">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red); background-color: var(--sidebar-bg); border-radius: 8px; padding: 5px 5px; cursor: pointer;">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <div>
+                <h1>System Console</h1>
+                <p>Node: <span style="color: var(--term-green)">cluster-mumbai-01</span></p>
+            </div>
+            <div id="clock" style="font-family: 'Fira Code'; color: var(--text-dim); font-size: 0.9rem;"></div>
+        </header>
+
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="window-controls">
+                    <div class="dot" style="background: #ff5f56;"></div>
+                    <div class="dot" style="background: #ffbd2e;"></div>
+                    <div class="dot" style="background: #27c93f;"></div>
+                </div>
+                <span style="font-size: 0.65rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1px;">SSH:
+                    root@educore_pro</span>
+            </div>
+
+            <div class="terminal-body" id="terminal-content">
+                <div class="output">
+                    EduCore OS v4.2.0-LTS (Kernel 5.15.0-62-generic)
+                    Last login: <span id="last-login-date"></span> from 127.0.0.1
+                    <br>Type <span class="stat-cmd">'help'</span> to see available management tools.
+                </div>
+
+                <div id="history"></div>
+
+                <div class="input-line">
+                    <span class="prompt">➜ ~</span>
+                    <input type="text" id="cmd-input" autofocus spellcheck="false" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const input = document.getElementById('cmd-input');
+        const history = document.getElementById('history');
+        const terminalBody = document.getElementById('terminal-content');
+
+        // Set dynamic dates
+        document.getElementById('last-login-date').innerText = new Date().toDateString();
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        const commands = {
+            'help': 'Available Commands:\n  <span class="stat-cmd">status</span>        Check server cluster health\n  <span class="stat-cmd">neofetch</span>      Display system information\n  <span class="stat-cmd">ping [host]</span>   Test network latency\n  <span class="stat-cmd">clear</span>         Wipe terminal history\n  <span class="stat-cmd">exit</span>          Logout of root session',
+            'neofetch': '<span style="color:var(--accent)">  ◢◤◢◤◢◤  </span>  <b style="color:white">OS</b>: EduCore Enterprise v4.2\n<span style="color:var(--accent)">  ◢◤◢◤◢◤  </span>  <b style="color:white">Host</b>: MH-Kalyan-Localhost\n<span style="color:var(--accent)">  ◢◤◢◤◢◤  </span>  <b style="color:white">Uptime</b>: 3 days, 4 hours\n<span style="color:var(--accent)">  ◢◤◢◤◢◤  </span>  <b style="color:white">Memory</b>: 2.4GB / 8.0GB',
+            'status': '<span class="stat-up">[ONLINE]</span> SQL Database Service\n<span class="stat-up">[ONLINE]</span> S3 Storage Bucket\n<span class="stat-warn">[IDLE]</span> Mail-Server-Relay'
+        };
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const val = input.value.trim();
+                if (!val) return;
+
+                const [cmd, ...args] = val.toLowerCase().split(' ');
+
+                const cmdLine = document.createElement('div');
+                cmdLine.innerHTML = `<span class="prompt">➜ ~</span> <span>${val}</span>`;
+                history.appendChild(cmdLine);
+
+                const out = document.createElement('div');
+                out.className = 'output';
+
+                if (cmd === 'clear') {
+                    history.innerHTML = '';
+                } else if (cmd === 'ping') {
+                    out.innerHTML = `64 bytes from ${args[0] || '127.0.0.1'}: icmp_seq=1 ttl=64 time=0.0${Math.floor(Math.random() * 90)} ms`;
+                    history.appendChild(out);
+                } else if (commands[cmd]) {
+                    out.innerHTML = commands[cmd];
+                    history.appendChild(out);
+                } else if (cmd === 'exit') {
+                    out.innerHTML = "Logging out...";
+                    history.appendChild(out);
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    out.innerHTML = `<span style="color:var(--accent)">command not found: ${cmd}</span>`;
+                    history.appendChild(out);
+                }
+
+                input.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const val = input.value.toLowerCase();
+                const match = Object.keys(commands).find(c => c.startsWith(val));
+                if (match) input.value = match;
+            }
+        });
+
+        terminalBody.onclick = () => input.focus();
+
+        function handleLogout() {
+            if (confirm("CRITICAL: Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="admin.js"></script>
+    <script src="student.js"></script>
+</body>
+
+</html>

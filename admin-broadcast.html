@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broadcast Center | EduCore Admin</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --primary: #ef4444;
+            --dark: #0f172a;
+            --bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.9);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .nav-item {
+            padding: 14px;
+            border-radius: 12px;
+            color: #64748b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            background: #fff1f2;
+            color: var(--primary);
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        .broadcast-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .composer-card,
+        .preview-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #fdfdfe;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.05);
+        }
+
+        .target-chips {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            border-radius: 100px;
+            background: #f1f5f9;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .chip.active {
+            background: var(--dark);
+            color: white;
+        }
+
+        /* --- Live Preview Styling --- */
+        .preview-screen {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 300px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative;
+        }
+
+        .mock-notification {
+            background: white;
+            width: 100%;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 12px;
+            animation: bounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes bounce {
+            from {
+                transform: scale(0.8);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .btn-send {
+            width: 100%;
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-send:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .history-list {
+            margin-top: 30px;
+        }
+
+        .history-item {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1 style="font-size: 2rem; font-weight: 800;">Broadcast Hub</h1>
+            <p style="color: #64748b; font-weight: 600;">Reach students and faculty instantly.</p>
+        </header>
+
+        <div class="broadcast-container">
+            <div class="composer-card">
+                <div class="form-group">
+                    <label>Announcement Title</label>
+                    <input type="text" id="msg-title" placeholder="e.g., Holiday Notice" onkeyup="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label>Target Audience</label>
+                    <div class="target-chips">
+                        <div class="chip active" onclick="this.classList.toggle('active')">All Students</div>
+                        <div class="chip" onclick="this.classList.toggle('active')">Faculty</div>
+                        <div class="chip" onclick="this.classList.toggle('active')">BCA Dept</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Message Body</label>
+                    <textarea id="msg-body" rows="5" placeholder="Write your announcement here..."
+                        onkeyup="updatePreview()"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Alert Type</label>
+                    <select id="msg-type" onchange="updatePreview()">
+                        <option value="info">Standard Info</option>
+                        <option value="urgent">Urgent Warning</option>
+                        <option value="success">Success / Achievement</option>
+                    </select>
+                </div>
+                <button class="btn-send" onclick="sendBroadcast()">
+                    <i class="fas fa-paper-plane"></i> Dispatch Announcement
+                </button>
+            </div>
+
+            <div class="preview-card">
+                <label>Live Preview (Student View)</label>
+                <div class="preview-screen">
+                    <div class="mock-notification" id="preview-box">
+                        <div id="type-icon"
+                            style="background: #f1f5f9; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h4 id="pre-title" style="font-size: 0.9rem; font-weight: 800;">Announcement Title</h4>
+                            <p id="pre-body" style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Message content
+                                will appear here as you type...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-list">
+                    <label>Recent Broadcasts</label>
+                    <div class="history-item">
+                        <div>
+                            <p style="font-weight: 700; font-size: 0.8rem;">Exam Postponed</p>
+                            <small style="color: #94a3b8;">Sent 2 hours ago</small>
+                        </div>
+                        <span style="font-size: 0.7rem; font-weight: 800; color: var(--primary);">RECALL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function updatePreview() {
+            const title = document.getElementById('msg-title').value;
+            const body = document.getElementById('msg-body').value;
+            const type = document.getElementById('msg-type').value;
+
+            document.getElementById('pre-title').innerText = title || "Announcement Title";
+            document.getElementById('pre-body').innerText = body || "Message content will appear here...";
+
+            const iconBox = document.getElementById('type-icon');
+            const previewBox = document.getElementById('preview-box');
+
+            if (type === 'urgent') {
+                iconBox.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                iconBox.style.color = '#ef4444';
+                previewBox.style.borderLeft = '4px solid #ef4444';
+            } else if (type === 'success') {
+                iconBox.innerHTML = '<i class="fas fa-check-circle"></i>';
+                iconBox.style.color = '#10b981';
+                previewBox.style.borderLeft = '4px solid #10b981';
+            } else {
+                iconBox.innerHTML = '<i class="fas fa-info-circle"></i>';
+                iconBox.style.color = '#3b82f6';
+                previewBox.style.borderLeft = '4px solid #3b82f6';
+            }
+        }
+
+        function sendBroadcast() {
+            const btn = document.querySelector('.btn-send');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Broadcasting...';
+            btn.style.background = "#64748b";
+
+            setTimeout(() => {
+                alert("Broadcast successfully dispatched to all selected targets!");
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Dispatch Announcement';
+                btn.style.background = "";
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

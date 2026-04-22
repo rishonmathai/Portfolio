@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --tr-danger: #ef4444;
+            --tr-warning: #f59e0b;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+
+        .header-section h1 {
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* --- Request Cards --- */
+        .request-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .leave-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 25px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .leave-card:hover {
+            border-color: var(--tr-primary);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .student-profile {
+            display: flex;
+            gap: 15px;
+        }
+
+        .std-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+        }
+
+        .leave-details h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .leave-details p {
+            margin: 5px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .reason-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 140px;
+        }
+
+        .btn-action {
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-approve {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .btn-approve:hover {
+            background: var(--tr-success);
+            color: white;
+        }
+
+        .btn-reject {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-reject:hover {
+            background: var(--tr-danger);
+            color: white;
+        }
+
+        /* --- Empty State --- */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 30px;
+            border: 2px dashed var(--border-color);
+            display: none;
+        }
+    </style>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="header-section">
+            <h1>Leave Management</h1>
+            <p style="color: var(--text-muted); font-weight: 600;">You have <span id="req-count"
+                    style="color: var(--tr-warning)">2 pending</span> applications</p>
+        </div>
+
+        <div class="request-container" id="request-list">
+            <div class="leave-card">
+                <div class="student-profile">
+                    <img src="https://ui-avatars.com/api/?name=Aditya+Singh&background=6366f1&color=fff"
+                        class="std-img">
+                    <div class="leave-details">
+                        <span class="reason-tag">Medical Leave</span>
+                        <h4>Aditya Singh</h4>
+                        <p><strong>Duration:</strong> 22 Apr - 24 Apr (3 Days)</p>
+                        <p>"Sir, I am suffering from a high fever and the doctor has advised complete bed rest for 3
+                            days. I have attached the medical certificate."</p>
+                    </div>
+                </div>
+                <div class="action-group">
+                    <button class="btn-action btn-approve" onclick="handleLeave(this, 'Approved')"><i
+                            class="fas fa-check"></i> Approve</button>
+                    <button class="btn-action btn-reject" onclick="handleLeave(this, 'Rejected')"><i
+                            class="fas fa-times"></i> Reject</button>
+                </div>
+            </div>
+
+            <div class="leave-card">
+                <div class="student-profile">
+                    <img src="https://ui-avatars.com/api/?name=Nishant+K&background=10b981&color=fff" class="std-img">
+                    <div class="leave-details">
+                        <span class="reason-tag">Family Event</span>
+                        <h4>Nishant Kulkarni</h4>
+                        <p><strong>Duration:</strong> 25 Apr (1 Day)</p>
+                        <p>"Attending my elder sister's wedding ceremony in Pune. I will be back in class on Monday."
+                        </p>
+                    </div>
+                </div>
+                <div class="action-group">
+                    <button class="btn-action btn-approve" onclick="handleLeave(this, 'Approved')"><i
+                            class="fas fa-check"></i> Approve</button>
+                    <button class="btn-action btn-reject" onclick="handleLeave(this, 'Rejected')"><i
+                            class="fas fa-times"></i> Reject</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="empty-msg" class="empty-state">
+            <i class="fas fa-coffee"
+                style="font-size: 3rem; color: var(--border-color); margin-bottom: 20px; display: block;"></i>
+            <h3 style="margin:0; color: var(--text-muted);">All caught up!</h3>
+            <p style="color: var(--text-muted); font-weight: 600;">No pending leave requests for your classes.</p>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trName = localStorage.getItem('userName') || "Rishon";
+            document.getElementById('tr-name-sidebar').innerText = "Prof. " + trName;
+            document.getElementById('tr-avatar-small').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+        });
+
+        function handleLeave(btn, status) {
+            const card = btn.closest('.leave-card');
+            const studentName = card.querySelector('h4').innerText;
+
+            if (confirm(`Are you sure you want to ${status} ${studentName}'s leave?`)) {
+                card.style.opacity = "0";
+                card.style.transform = "translateX(20px)";
+
+                setTimeout(() => {
+                    card.remove();
+                    updateCounter();
+                }, 300);
+            }
+        }
+
+        function updateCounter() {
+            const count = document.querySelectorAll('.leave-card').length;
+            const countText = document.getElementById('req-count');
+
+            if (count === 0) {
+                countText.innerText = "0 pending";
+                countText.style.color = "var(--tr-success)";
+                document.getElementById('empty-msg').style.display = "block";
+            } else {
+                countText.innerText = count + " pending";
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

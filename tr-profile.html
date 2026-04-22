@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Profile | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-indigo: #4f46e5;
+            --secondary-indigo: #4338ca;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Upgraded Header with Indigo Gradient */
+        .profile-card-header {
+            background: linear-gradient(135deg, var(--primary-indigo), #6366f1);
+            border-radius: 24px 24px 0 0;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: white;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .header-info h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header-info p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* Teacher Stats Section - NEW Upgraded Feature */
+        .teacher-stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: white;
+            padding: 20px;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            margin: 0;
+            color: var(--primary-indigo);
+            font-size: 1.5rem;
+        }
+
+        .stat-item p {
+            margin: 5px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .profile-body {
+            background: white;
+            border-radius: 0 0 24px 24px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            border-top: none;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary-indigo);
+            font-weight: 800;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .detail-item label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-indigo);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .profile-card-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .teacher-stats-bar {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+
+            <div class="profile-card-header">
+                <img id="tr-avatar" src="https://ui-avatars.com/api/?name=Teacher&background=fff&color=4f46e5&size=128"
+                    alt="Teacher" class="profile-avatar">
+                <div class="header-info">
+                    <h1 id="tr-name-header">FACULTY NAME</h1>
+                    <p>Senior Professor • Dept. of Computer Science</p>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">Employee ID: <span id="tr-id-header">TR-4492</span></p>
+                </div>
+            </div>
+
+            <div class="teacher-stats-bar">
+                <div class="stat-item">
+                    <h3>120+</h3>
+                    <p>Total Students</p>
+                </div>
+                <div class="stat-item"
+                    style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
+                    <h3>08</h3>
+                    <p>Active Batches</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.9</h3>
+                    <p>Rating</p>
+                </div>
+            </div>
+
+            <div class="profile-body">
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-id-card"></i> Professional Information</div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Official Email</label>
+                            <span id="tr-email">faculty@educore.edu</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Designation</label>
+                            <span>Associate Professor</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Specialization</label>
+                            <span>Full Stack & AI Systems</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Office Location</label>
+                            <span>Faculty Wing B, Cabin 402</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-briefcase"></i> Experience Details</div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Joining Date</label>
+                            <span>12 Jan 2018</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Qualification</label>
+                            <span>Ph.D. in Computer Engineering</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    <a href="tr-edit.html" class="edit-profile-btn"
+                        style="border: 1.5px solid var(--primary-indigo); color: var(--primary-indigo); text-decoration: none; padding: 10px 20px; border-radius: 12px; font-weight: 700;">
+                        <i class="fas fa-user-edit"></i> Update Professional Bio
+                    </a>
+                </div>
+
+                <a href="teacher.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Return to Overview
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Logic to pull Teacher Data (Similar to Student but using Teacher keys)
+            const trName = localStorage.getItem('userName') || "Prof. Rishon";
+            const trEmail = localStorage.getItem('userEmail') || "rishon@educore.edu";
+            const trID = localStorage.getItem('userID') || "TR-8821";
+
+            document.getElementById('tr-name-header').innerText = trName;
+            document.getElementById('tr-email').innerText = trEmail;
+            document.getElementById('tr-id-header').innerText = trID;
+            document.getElementById('tr-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=fff&color=4f46e5&size=128`;
+        });
+
+        function handleLogout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

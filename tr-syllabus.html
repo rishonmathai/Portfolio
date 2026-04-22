@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Tracker | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --tr-danger: #ef4444;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .syllabus-header {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- Progress Ring --- */
+        .progress-circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: conic-gradient(var(--tr-primary) 0%, #e2e8f0 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .progress-circle::after {
+            content: attr(data-pct);
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--tr-primary);
+        }
+
+        /* --- Module Cards --- */
+        .module-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .module-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            border-color: var(--tr-primary);
+        }
+
+        .module-card.completed {
+            border-left: 8px solid var(--tr-success);
+        }
+
+        .module-card.pending {
+            border-left: 8px solid #cbd5e1;
+        }
+
+        .module-info h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .module-card.completed .module-info h4 {
+            color: var(--tr-success);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .status-done {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-yet {
+            background: #f1f5f9;
+            color: var(--text-muted);
+        }
+
+        .status-yet:hover {
+            background: var(--tr-primary);
+            color: white;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: var(--tr-danger);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn:hover {
+            background: var(--tr-danger);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .btn-add {
+            background: var(--tr-primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <a href="teacher.html" class="nav-item back-btn"
+            style="background: #f1f5f9; margin-bottom: 25px; border: 1px solid var(--border-color); color: var(--text-dark);">
+            <i class="fas fa-chevron-left"></i>
+            <span>Back to Dashboard</span>
+        </a>
+        <div class="syllabus-header">
+            <div>
+                <h1 style="margin:0; font-weight: 800; letter-spacing: -1px;">Python Programming</h1>
+                <p style="margin:5px 0; color: var(--text-muted); font-weight: 600;">Subject Code: BCA-204 • SY BCA</p>
+                <div style="margin-top: 15px; display: flex; gap: 12px;">
+                    <button class="btn-add" onclick="addModule()"><i class="fas fa-plus-circle"></i> Add New
+                        Module</button>
+                    <button class="status-badge" style="background: #eef2ff; color: var(--tr-primary);"
+                        onclick="window.print()">Export syllabus</button>
+                </div>
+            </div>
+            <div class="progress-box" style="text-align: center;">
+                <div class="progress-circle" id="main-progress" data-pct="0%"></div>
+                <p
+                    style="margin-top: 12px; font-weight: 800; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px;">
+                    COURSE PROGRESS</p>
+            </div>
+        </div>
+
+        <div class="module-list" id="module-container">
+        </div>
+    </main>
+
+    <script>
+        // Initial Data Structure
+        let modules = [
+            { id: 1, title: "Module 1: Introduction", desc: "Syntax, Variables, and Basic Operators", status: "completed" },
+            { id: 2, title: "Module 2: Control Flow", desc: "If-Else, Loops, and Logic", status: "completed" },
+            { id: 3, title: "Module 3: Functions", desc: "Def, Return, and PIP modules", status: "pending" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const trName = localStorage.getItem('userName') || "Rishon";
+            document.getElementById('tr-name-sidebar').innerText = "Prof. " + trName;
+            document.getElementById('tr-avatar-small').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+
+            renderModules();
+        });
+
+        function renderModules() {
+            const container = document.getElementById('module-container');
+            container.innerHTML = '';
+
+            modules.forEach((mod, index) => {
+                const card = document.createElement('div');
+                card.className = `module-card ${mod.status}`;
+                card.style.animation = `slideUp 0.4s ease-out ${index * 0.1}s backwards`;
+
+                card.innerHTML = `
+                    <div class="module-info">
+                        <h4>${mod.title}</h4>
+                        <p>${mod.desc}</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="status-badge ${mod.status === 'completed' ? 'status-done' : 'status-yet'}" 
+                                onclick="toggleStatus(${mod.id})">
+                            ${mod.status === 'completed' ? '<i class="fas fa-check"></i> COMPLETED' : 'MARK DONE'}
+                        </button>
+                        <button class="delete-btn" onclick="deleteModule(${mod.id})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            updateGlobalProgress();
+        }
+
+        function toggleStatus(id) {
+            const mod = modules.find(m => m.id === id);
+            mod.status = mod.status === 'completed' ? 'pending' : 'completed';
+            renderModules(); // Re-render to apply classes and animations
+        }
+
+        function deleteModule(id) {
+            if (confirm("Remove this module from syllabus?")) {
+                modules = modules.filter(m => m.id !== id);
+                renderModules();
+            }
+        }
+
+        function addModule() {
+            const title = prompt("Enter Module Name (e.g., Module 4: OOPs):");
+            if (!title) return;
+            const desc = prompt("Enter Short Description:");
+
+            const newMod = {
+                id: Date.now(),
+                title: title,
+                desc: desc || "No description",
+                status: "pending"
+            };
+
+            modules.push(newMod);
+            renderModules();
+        }
+
+        function updateGlobalProgress() {
+            const total = modules.length;
+            const completed = modules.filter(m => m.status === 'completed').length;
+            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+            const circle = document.getElementById('main-progress');
+
+            // Smoothly animate the conic gradient
+            circle.style.background = `conic-gradient(var(--tr-primary) ${percentage}%, #e2e8f0 0)`;
+            circle.setAttribute('data-pct', percentage + "%");
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

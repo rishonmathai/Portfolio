@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-header i {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        /* Toggle & Option Rows */
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .option-info h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .option-info p {
+            margin: 4px 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Professional Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary-blue);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .select-input {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .btn-save-settings {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-save-settings:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+            <h2 style="margin-bottom: 25px;"><i class="fas fa-cog"></i> Account Settings</h2>
+
+            <div class="settings-card">
+                <form id="settingsForm">
+
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <i class="fas fa-desktop"></i>
+                            <h3>Display & Interface</h3>
+                        </div>
+
+                        <div class="option-row">
+                            <div class="option-info">
+                                <h4>Dark Mode</h4>
+                                <p>Switch between light and dark themes.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="option-row">
+                            <div class="option-info">
+                                <h4>Compact View</h4>
+                                <p>Make dashboard elements smaller to see more data.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <i class="fas fa-globe"></i>
+                            <h3>Localization</h3>
+                        </div>
+
+                        <div class="option-row">
+                            <div class="option-info">
+                                <h4>Language</h4>
+                                <p>Select your preferred language for the interface.</p>
+                            </div>
+                            <select class="select-input">
+                                <option value="en">English (US)</option>
+                                <option value="hi">Hindi</option>
+                                <option value="mr">Marathi</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <i class="fas fa-bell"></i>
+                            <h3>Notifications</h3>
+                        </div>
+
+                        <div class="option-row">
+                            <div class="option-info">
+                                <h4>Email Notifications</h4>
+                                <p>Receive weekly academic progress reports via email.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save-settings">Save Changes</button>
+                    <div style="clear: both;"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const settingsForm = document.getElementById('settingsForm');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+
+            // 1. Load Saved Settings on Page Load
+            // This ensures that if a user enabled Dark Mode before, it stays enabled.
+            loadSettings();
+
+            // 2. Handle Form Submission
+            settingsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveSettings();
+
+                // Visual feedback for the user
+                const saveBtn = settingsForm.querySelector('.btn-save-settings');
+                const originalText = saveBtn.innerHTML;
+
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                saveBtn.style.background = '#2ecc71'; // Success Green
+
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.style.background = ''; // Resets to CSS variable
+                }, 2000);
+            });
+
+            // 3. Immediate Theme Toggle Logic
+            darkModeToggle.addEventListener('change', () => {
+                applyTheme(darkModeToggle.checked);
+            });
+
+            /**
+             * Saves all checkbox and select values to localStorage
+             */
+            function saveSettings() {
+                const settings = {
+                    darkMode: darkModeToggle.checked,
+                    compactView: document.querySelector('input[type="checkbox"]:not(#darkModeToggle)').checked,
+                    language: document.querySelector('.select-input').value,
+                    emailNotif: document.querySelector('input[checked]')?.checked || false
+                };
+
+                localStorage.setItem('educore_settings', JSON.stringify(settings));
+                console.log("Settings saved to local storage.");
+            }
+
+            /**
+             * Retrieves settings and updates the UI elements
+             */
+            function loadSettings() {
+                const savedData = localStorage.getItem('educore_settings');
+                if (savedData) {
+                    const settings = JSON.parse(savedData);
+
+                    // Update UI elements to match saved data
+                    darkModeToggle.checked = settings.darkMode;
+                    document.querySelector('.select-input').value = settings.language;
+
+                    // Apply the theme immediately
+                    applyTheme(settings.darkMode);
+                }
+            }
+
+            /**
+             * Changes the look of the app based on theme selection
+             * @param {boolean} isDark 
+             */
+            function applyTheme(isDark) {
+                if (isDark) {
+                    document.body.classList.add('dark-theme');
+                    // Update CSS variables dynamically if you don't use a separate file
+                    document.documentElement.style.setProperty('--bg-gray', '#1a1a1a');
+                    document.documentElement.style.setProperty('--text-dark', '#f8fafc');
+                    document.documentElement.style.setProperty('--border-color', '#334155');
+                    // This targets the white cards
+                    document.querySelectorAll('.settings-card').forEach(card => {
+                        card.style.background = '#262626';
+                    });
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    document.documentElement.style.setProperty('--bg-gray', '#f8fafc');
+                    document.documentElement.style.setProperty('--text-dark', '#1e293b');
+                    document.documentElement.style.setProperty('--border-color', '#e2e8f0');
+                    document.querySelectorAll('.settings-card').forEach(card => {
+                        card.style.background = 'white';
+                    });
+                }
+            }
+        });
+    </script>
+    <script src="student.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #e67e22;
+            --exam-red: #e74c3c;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-header h2 { margin: 0; font-size: 1.5rem; color: var(--text-dark); }
+        .section-header i { color: var(--primary-orange); font-size: 1.4rem; }
+
+        /* Timetable Grid */
+        .tt-container {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            animation: slideUp 0.6s ease;
+        }
+
+        .tt-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 8px;
+        }
+
+        .tt-table th {
+            padding: 12px;
+            background: #fff3e0;
+            color: var(--primary-orange);
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .tt-table td {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            min-width: 160px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .tt-table td:hover { border-color: var(--primary-orange); background: white; }
+
+        .sub-name { display: block; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; }
+        .sub-time { display: block; font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+
+        /* Exam Table Specifics */
+        .exam-header i { color: var(--exam-red); }
+        .exam-row td { border-left: 4px solid var(--exam-red); }
+        .exam-badge {
+            background: #fee2e2;
+            color: var(--exam-red);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) { .main-wrapper { margin-left: 0; padding: 20px; } }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        
+        <div class="section-header">
+            <i class="fas fa-clock"></i>
+            <h2>Class Time Table</h2>
+        </div>
+
+        <div class="tt-container">
+            <table class="tt-table">
+                <thead>
+                    <tr>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="sub-name">Full Stack Dev</span><span class="sub-time">09:00 - 09:45</span></td>
+                        <td><span class="sub-name">Data Structures</span><span class="sub-time">09:00 - 09:45</span></td>
+                        <td><span class="sub-name">Mathematics</span><span class="sub-time">09:00 - 09:45</span></td>
+                        <td><span class="sub-name">Python Lab</span><span class="sub-time">09:00 - 09:45</span></td>
+                        <td><span class="sub-name">Soft Skills</span><span class="sub-time">09:00 - 09:45</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="sub-name">UI/UX Design</span><span class="sub-time">09:45 - 10:30</span></td>
+                        <td><span class="sub-name">Cloud Computing</span><span class="sub-time">09:45 - 10:30</span></td>
+                        <td><span class="sub-name">Software Eng.</span><span class="sub-time">09:45 - 10:30</span></td>
+                        <td><span class="sub-name">Cyber Security</span><span class="sub-time">09:45 - 10:30</span></td>
+                        <td><span class="sub-name">Data Structures</span><span class="sub-time">09:45 - 10:30</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="text-align: center; background: #f1f5f9; color: #94a3b8; font-size: 0.7rem; letter-spacing: 3px;">SHORT BREAK (10:30 - 10:45)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="sub-name">Software Eng.</span><span class="sub-time">10:45 - 11:30</span></td>
+                        <td><span class="sub-name">Full Stack Dev</span><span class="sub-time">10:45 - 11:30</span></td>
+                        <td><span class="sub-name">Networking</span><span class="sub-time">10:45 - 11:30</span></td>
+                        <td><span class="sub-name">Cloud Computing</span><span class="sub-time">10:45 - 11:30</span></td>
+                        <td><span class="sub-name">Project Work</span><span class="sub-time">10:45 - 11:30</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="sub-name">Cyber Security</span><span class="sub-time">11:30 - 12:15</span></td>
+                        <td><span class="sub-name">Mathematics</span><span class="sub-time">11:30 - 12:15</span></td>
+                        <td><span class="sub-name">Lab: HTML/CSS</span><span class="sub-time">11:30 - 12:15</span></td>
+                        <td><span class="sub-name">UI/UX Design</span><span class="sub-time">11:30 - 12:15</span></td>
+                        <td><span class="sub-name">Library Hour</span><span class="sub-time">11:30 - 12:15</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-header exam-header">
+            <i class="fas fa-file-alt"></i>
+            <h2>Examination Schedule</h2>
+        </div>
+
+        <div class="tt-container">
+            <table class="tt-table">
+                <thead>
+                    <tr style="background: #fee2e2;">
+                        <th style="background: #fee2e2; color: var(--exam-red);">Date</th>
+                        <th style="background: #fee2e2; color: var(--exam-red);">Subject</th>
+                        <th style="background: #fee2e2; color: var(--exam-red);">Type</th>
+                        <th style="background: #fee2e2; color: var(--exam-red);">Time</th>
+                        <th style="background: #fee2e2; color: var(--exam-red);">Venue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="exam-row">
+                        <td><strong>May 04, 2026</strong></td>
+                        <td>Full Stack Web Architecture</td>
+                        <td><span class="exam-badge">THEORY</span></td>
+                        <td>10:00 AM - 01:00 PM</td>
+                        <td>Main Hall A</td>
+                    </tr>
+                    <tr class="exam-row">
+                        <td><strong>May 06, 2026</strong></td>
+                        <td>Data Structures & Algorithms</td>
+                        <td><span class="exam-badge">THEORY</span></td>
+                        <td>10:00 AM - 01:00 PM</td>
+                        <td>Main Hall A</td>
+                    </tr>
+                    <tr class="exam-row">
+                        <td><strong>May 08, 2026</strong></td>
+                        <td>Software Engineering</td>
+                        <td><span class="exam-badge">THEORY</span></td>
+                        <td>10:00 AM - 01:00 PM</td>
+                        <td>Block 201</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-header-alt">
+                <a href="student.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+    </main>
+
+    <script>
+        function handleLogout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+    <script src="student.js"></script>
+</body>
+</html>

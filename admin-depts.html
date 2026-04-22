@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments | EduCore Admin</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --card-glass: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 1. KEYFRAME ANIMATIONS */
+        @keyframes revealCard {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(40px);
+                filter: blur(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes borderFlow {
+            0% {
+                border-color: #f1f5f9;
+            }
+
+            50% {
+                border-color: var(--admin-red);
+            }
+
+            100% {
+                border-color: #f1f5f9;
+            }
+        }
+
+        /* 2. LAYOUT & SEARCH */
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+            max-width: 500px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-wrapper input:focus {
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.15);
+            border-color: var(--admin-red);
+            outline: none;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* 3. DYNAMIC GRID & CARDS */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .dept-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 30px;
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            position: relative;
+            animation: revealCard 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dept-card:hover {
+            transform: translateY(-15px);
+            background: #ffffff;
+            box-shadow: 0 40px 60px -15px rgba(15, 23, 42, 0.1);
+        }
+
+        .dept-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .dept-card:hover::after {
+            animation: borderFlow 2s infinite;
+        }
+
+        /* 4. PROGRESS & STATS */
+        .stat-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .progress-container {
+            margin: 25px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--admin-red), #f87171);
+            width: 0;
+            /* Animated via JS */
+            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.1, 1);
+            border-radius: 20px;
+        }
+
+        /* 5. QUICK ACTION BUTTONS */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.3s ease;
+        }
+
+        .dept-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-pill {
+            flex: 1;
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pill-edit {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .pill-delete {
+            background: #fff1f2;
+            color: #e11d48;
+        }
+
+        .action-pill:hover {
+            filter: brightness(0.95);
+        }
+
+        /* 1. Modal Fixes: Clearer layout & proper close button positioning */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Positioning the 'X' button to the top-right instead of inside the form flow */
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        /* 2. Button Refinement: Clean, clear, and responsive */
+        .add-user-btn,
+        .save-user-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+
+        .add-user-btn:hover,
+        .save-user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+            filter: brightness(1.1);
+        }
+
+        /* 3. Table Action Fixes: Interactive feedback for icons */
+        .action-btn {
+            border: none;
+            background: none;
+            padding: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s ease;
+            border-radius: 8px;
+        }
+
+        .action-btn:hover {
+            background: #f8fafc;
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        /* Update this specific class in your CSS */
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            /* Pushes Search to left, Button to right */
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+            /* Maintains a safe gap between them */
+            margin-bottom: 30px;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            /* Allows the search bar to occupy the remaining space */
+            max-width: 400px;
+            /* Keeps the search bar at a clean, readable width */
+        }
+
+        .add-dept-btn {
+            flex-shrink: 0;
+            /* Ensures the button doesn't get squashed on smaller screens */
+            white-space: nowrap;
+            /* Keeps the text "Create Unit" on a single line */
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-controls">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="deptSearch" placeholder="Search departments or HODs..."
+                        onkeyup="searchDepts()">
+                </div>
+                <button class="add-user-btn" onclick="addNewDept()">
+                    <i class="fas fa-plus-circle"></i> Create Unit
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="dept-grid" id="deptGrid">
+
+                <div class="dept-card" data-name="Computer Applications">
+                    <div class="stat-bubble"><i class="fas fa-users"></i> 420 Students</div>
+                    <h3 style="margin: 15px 0 5px 0; font-weight: 800;">Computer Applications</h3>
+                    <p style="font-size: 0.85rem; color: #64748b;">Dr. Rajesh Sharma</p>
+
+                    <div class="progress-container">
+                        <div class="progress-label"><span>Resource Load</span><span class="pct">92%</span></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" data-width="92%"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-pill pill-edit"><i class="fas fa-pen"></i> Edit</button>
+                        <button class="action-pill pill-delete" onclick="deleteCard(this)"><i class="fas fa-trash"></i>
+                            Drop</button>
+                    </div>
+                </div>
+
+                <div class="dept-card" data-name="Interior Architecture">
+                    <div class="stat-bubble"><i class="fas fa-users"></i> 185 Students</div>
+                    <h3 style="margin: 15px 0 5px 0; font-weight: 800;">Interior Architecture</h3>
+                    <p style="font-size: 0.85rem; color: #64748b;">Prof. Ananya Iyer</p>
+
+                    <div class="progress-container">
+                        <div class="progress-label"><span>Resource Load</span><span class="pct">65%</span></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" data-width="65%"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-pill pill-edit"><i class="fas fa-pen"></i> Edit</button>
+                        <button class="action-pill pill-delete" onclick="deleteCard(this)"><i class="fas fa-trash"></i>
+                            Drop</button>
+                    </div>
+                </div>
+
+                <div class="dept-card" data-name="Business Strategy">
+                    <div class="stat-bubble"><i class="fas fa-users"></i> 540 Students</div>
+                    <h3 style="margin: 15px 0 5px 0; font-weight: 800;">Business Strategy</h3>
+                    <p style="font-size: 0.85rem; color: #64748b;">Mrs. Sarah J.</p>
+
+                    <div class="progress-container">
+                        <div class="progress-label"><span>Resource Load</span><span class="pct">48%</span></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" data-width="48%"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-pill pill-edit"><i class="fas fa-pen"></i> Edit</button>
+                        <button class="action-pill pill-delete" onclick="deleteCard(this)"><i class="fas fa-trash"></i>
+                            Drop</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. Initialise Progress Bars on Load
+        window.onload = () => {
+            const fills = document.querySelectorAll('.progress-fill');
+            fills.forEach(fill => {
+                fill.style.width = fill.getAttribute('data-width');
+            });
+        };
+
+        // 2. Real-time Search Function
+        function searchDepts() {
+            const query = document.getElementById('deptSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.dept-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const hod = card.querySelector('p').innerText.toLowerCase();
+
+                if (name.includes(query) || hod.includes(query)) {
+                    card.style.display = "block";
+                    card.style.animation = "revealCard 0.4s ease forwards";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // 3. Delete Department with Animation
+        function deleteCard(btn) {
+            if (confirm("Are you sure you want to decommission this unit?")) {
+                const card = btn.closest('.dept-card');
+                card.style.transform = "scale(0.8) rotate(-5deg)";
+                card.style.opacity = "0";
+                card.style.transition = "0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045)";
+                setTimeout(() => card.remove(), 400);
+            }
+        }
+
+        // 4. Dynamic "Add Department" Mockup
+        function addNewDept() {
+            const grid = document.getElementById('deptGrid');
+            const newCard = document.createElement('div');
+            newCard.className = 'dept-card';
+            newCard.setAttribute('data-name', 'New Department');
+            newCard.innerHTML = `
+                <div class="stat-bubble"><i class="fas fa-users"></i> 0 Students</div>
+                <h3 style="margin: 15px 0 5px 0; font-weight: 800;">New Department</h3>
+                <p style="font-size: 0.85rem; color: #64748b;">Assigning HOD...</p>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Resource Load</span><span class="pct">10%</span></div>
+                    <div class="progress-track"><div class="progress-fill" style="width: 10%"></div></div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-pill pill-edit"><i class="fas fa-pen"></i> Edit</button>
+                    <button class="action-pill pill-delete" onclick="deleteCard(this)"><i class="fas fa-trash"></i> Drop</button>
+                </div>
+            `;
+            grid.prepend(newCard);
+        }
+
+        // Ripple Effect
+        // Add Ripple Effect to all Primary Buttons
+        document.querySelectorAll('.add-user-btn, .add-dept-btn, .save-user-btn').forEach(button => {
+            button.addEventListener('mousedown', function (e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        function handleLogout() {
+            if (confirm("CRITICAL: Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

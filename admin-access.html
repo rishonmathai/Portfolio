@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Control | EduCore Control</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --danger: #dc2626;
+        }
+
+        /* Access Control Specifics */
+        .status-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        }
+
+        .lockdown-zone {
+            background: #fef2f2;
+            border: 2px dashed #fecaca;
+            padding: 20px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .session-list {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
+        }
+
+        .session-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: 0.2s;
+        }
+
+        .session-item:hover {
+            background: #fafafa;
+        }
+
+        .device-icon {
+            width: 45px;
+            height: 45px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+
+        .user-info h4 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .user-info p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .ip-badge {
+            font-family: 'Courier New', monospace;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .btn-revoke {
+            background: white;
+            border: 1.5px solid #fee2e2;
+            color: var(--admin-red);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-revoke:hover {
+            background: var(--admin-red);
+            color: white;
+            border-color: var(--admin-red);
+        }
+
+        /* Back Button */
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .admin-back-btn:hover {
+            color: var(--admin-red);
+            transform: translateX(-5px);
+        }
+
+        /* Lockdown Toggle Animation */
+        .lock-active {
+            background: var(--admin-red) !important;
+            color: white !important;
+            border-color: var(--admin-red) !important;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-access.html" class="nav-item active">
+                <i class="fas fa-user-slash"></i> Access Control
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-shield-virus"></i>
+                <input type="text" placeholder="Search IP or Username...">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="ad-profile.html" style="text-decoration: none;"><span
+                            class="user-name">ADMINISTRATOR</span></a>
+                    <span class="user-role">Super User | Tier 1</span>
+                </div>
+                <a href="ad-profile.html" style="text-decoration: none;"><img
+                        src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" alt="Admin" class="header-avatar"
+                        style="border: 2px solid var(--admin-red); padding: 2px;"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);">
+                <a href="admin.html" class="admin-back-btn">
+                    <i class="fas fa-chevron-left"></i> Back to Console
+                </a>
+                <h1 style="color: var(--admin-dark); margin-top: 15px;">Access Control</h1>
+                <p>Manage real-time authentication and network security.</p>
+            </div>
+
+            <div class="lockdown-zone" id="lockdownArea">
+                <div
+                    style="background: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--admin-red); box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <i class="fas fa-radiation"></i>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--admin-red); font-weight: 800;">Emergency System Lockdown</h3>
+                    <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #7f1d1d;">Instantly terminate all active
+                        student/faculty sessions.</p>
+                </div>
+                <button class="btn-revoke" style="padding: 12px 25px; border-width: 2px;"
+                    onclick="triggerLockdown()">Initiate Lockdown</button>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--admin-dark);">Live Sessions (4 Active)</h3>
+            <div class="session-list">
+                <div class="session-item" id="session-1">
+                    <div class="device-icon"><i class="fas fa-laptop"></i></div>
+                    <div class="user-info">
+                        <h4>Rishon S. (Super Admin)</h4>
+                        <p>Chrome on Windows 11 • Mumbai, IN</p>
+                    </div>
+                    <span class="ip-badge">192.168.1.45</span>
+                    <button class="btn-revoke" onclick="revokeSession('session-1')">Terminate</button>
+                </div>
+
+                <div class="session-item" id="session-2">
+                    <div class="device-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="user-info">
+                        <h4>Amit Kumar (Student)</h4>
+                        <p>Safari on iPhone 15 • Navi Mumbai, IN</p>
+                    </div>
+                    <span class="ip-badge">103.44.12.1</span>
+                    <button class="btn-revoke" onclick="revokeSession('session-2')">Terminate</button>
+                </div>
+
+                <div class="session-item" id="session-3">
+                    <div class="device-icon"><i class="fas fa-desktop"></i></div>
+                    <div class="user-info">
+                        <h4>Dr. Priya Verma (Faculty)</h4>
+                        <p>Edge on MacOS • Mulund, IN</p>
+                    </div>
+                    <span class="ip-badge">172.16.254.1</span>
+                    <button class="btn-revoke" onclick="revokeSession('session-3')">Terminate</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function revokeSession(id) {
+            if (confirm("Disconnect this user immediately?")) {
+                const element = document.getElementById(id);
+                element.style.opacity = '0';
+                element.style.transform = 'translateX(20px)';
+                setTimeout(() => element.remove(), 300);
+            }
+        }
+
+        function triggerLockdown() {
+            const code = prompt("CRITICAL: Enter Admin Override Code to Initiate Lockdown:");
+            if (code === "1234") { // Example code
+                document.getElementById('lockdownArea').classList.add('lock-active');
+                alert("SYSTEM LOCKDOWN INITIATED. ALL SESSIONS TERMINATED.");
+                document.querySelectorAll('.session-item').forEach(item => item.remove());
+            } else {
+                alert("Invalid Authorization.");
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

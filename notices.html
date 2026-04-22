@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --urgent-red: #ef4444;
+            --academic-green: #10b981;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* Notice Card Styling */
+        .notice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            gap: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Priority Indicators */
+        .notice-card.urgent { border-left: 6px solid var(--urgent-red); }
+        .notice-card.academic { border-left: 6px solid var(--academic-green); }
+        .notice-card.general { border-left: 6px solid var(--primary-blue); }
+
+        .notice-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .urgent .notice-icon { background: #fee2e2; color: var(--urgent-red); }
+        .academic .notice-icon { background: #dcfce7; color: var(--academic-green); }
+        .general .notice-icon { background: #e0f2fe; color: var(--primary-blue); }
+
+        .notice-content { flex: 1; }
+
+        .notice-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .notice-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 10px 0;
+        }
+
+        .notice-body {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .urgent .tag { background: #fee2e2; color: var(--urgent-red); }
+        .academic .tag { background: #dcfce7; color: var(--academic-green); }
+
+        @media (max-width: 768px) {
+            .main-wrapper { margin-left: 0; padding: 20px; }
+            .notice-card { flex-direction: column; }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+            
+            <div class="page-header">
+                <h1>Campus Notices</h1>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Updated: April 2026</span>
+            </div>
+
+            <div class="notice-list">
+                
+                <div class="notice-card urgent">
+                    <div class="notice-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="notice-content">
+                        <div class="notice-meta">
+                            <span><i class="far fa-calendar"></i> 21 April, 2026</span>
+                            <span class="tag">Urgent</span>
+                        </div>
+                        <h3 class="notice-title">Semester Examination Schedule Released</h3>
+                        <p class="notice-body">The final examination timetable for Semester IV is now available. Students are requested to download it from the portal and check for any clashes immediately.</p>
+                    </div>
+                </div>
+
+                <div class="notice-card academic">
+                    <div class="notice-icon"><i class="fas fa-book"></i></div>
+                    <div class="notice-content">
+                        <div class="notice-meta">
+                            <span><i class="far fa-calendar"></i> 19 April, 2026</span>
+                            <span class="tag">Academic</span>
+                        </div>
+                        <h3 class="notice-title">Guest Lecture: Full-Stack Web Architecture</h3>
+                        <p class="notice-body">Join us this Friday for an exclusive session with industry experts on Next.js and Scalable Systems. Attendance is mandatory for IT students.</p>
+                    </div>
+                </div>
+
+                <div class="notice-card general">
+                    <div class="notice-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="notice-content">
+                        <div class="notice-meta">
+                            <span><i class="far fa-calendar"></i> 15 April, 2026</span>
+                        </div>
+                        <h3 class="notice-title">Annual Sports Meet Registrations</h3>
+                        <p class="notice-body">Registrations for the Annual Sports Meet are now open. Interested students can sign up at the Physical Education department or via the portal form.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-header-alt">
+            <a href="student.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="student.js"></script>
+</body>
+
+</html>

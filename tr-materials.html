@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Materials | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-zone {
+            background: #fff;
+            border: 2px dashed var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--tr-primary);
+            background: #f5f7ff;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mini-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mini-card i {
+            font-size: 1.2rem;
+            color: var(--tr-primary);
+        }
+
+        .mini-card div b {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .mini-card div span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* --- Search & Grid --- */
+        .search-bar {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            margin-bottom: 25px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .material-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .material-card:hover {
+            border-color: var(--tr-primary);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-type-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-btns {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-sm {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+
+        .btn-sm:hover {
+            color: var(--tr-primary);
+        }
+
+        .btn-del:hover {
+            color: var(--tr-danger);
+        }
+
+        tr.hidden,
+        .material-card.hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+
+        <div class="header-actions">
+            <a href="teacher.html" class="nav-item back-btn"
+                style="background: #eef2ff; color: var(--tr-primary); border: 1px solid rgba(99, 102, 241, 0.2); margin-bottom: 25px;">
+                <i class="fas fa-arrow-left"></i>
+                <span style="font-weight: 800;">Back to Dashboard</span>
+            </a>
+            <h1>Course Materials</h1>
+            <span id="storage-indicator" style="font-size: 0.75rem; font-weight: 800; color: var(--tr-success);">
+                <i class="fas fa-cloud"></i> 1.2 GB / 5 GB Used
+            </span>
+        </div>
+
+        <div class="stats-row">
+            <div class="mini-card">
+                <i class="fas fa-file-pdf"></i>
+                <div><b id="pdf-count">12</b><span>Documents</span></div>
+            </div>
+            <div class="mini-card">
+                <i class="fas fa-play-circle"></i>
+                <div><b id="video-count">05</b><span>Lectures</span></div>
+            </div>
+            <div class="mini-card">
+                <i class="fas fa-code"></i>
+                <div><b id="code-count">08</b><span>Zip/Code</span></div>
+            </div>
+        </div>
+
+        <div class="upload-zone" onclick="simulateUpload()">
+            <i class="fas fa-cloud-upload-alt"
+                style="font-size: 2.5rem; color: var(--tr-primary); margin-bottom: 10px;"></i>
+            <h3 style="margin:0">Click or Drag files to upload</h3>
+            <p style="color: var(--text-muted); font-size: 0.8rem; font-weight: 600;">Support PDFs, ZIPs, MP4s (Max
+                100MB per file)</p>
+        </div>
+
+        <input type="text" id="fileSearch" class="search-bar" placeholder="Search for files, subjects or units..."
+            onkeyup="filterFiles()">
+
+        <div class="materials-grid" id="file-grid">
+            <div class="material-card" data-name="flask-intro">
+                <div class="file-type-icon" style="color: #ef4444;"><i class="fas fa-file-pdf"></i></div>
+                <h4 style="margin:0">Flask_Intro_Unit1.pdf</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin: 5px 0;">Added: 15 Apr
+                    2026 • 4.2 MB</p>
+                <div class="footer-btns">
+                    <button class="btn-sm"><i class="fas fa-eye"></i> View</button>
+                    <button class="btn-sm btn-del" onclick="deleteFile(this)"><i class="fas fa-trash"></i>
+                        Delete</button>
+                </div>
+            </div>
+
+            <div class="material-card" data-name="db-setup">
+                <div class="file-type-icon" style="color: #6366f1;"><i class="fas fa-play-circle"></i></div>
+                <h4 style="margin:0">DB_Setup_Tutorial.mp4</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin: 5px 0;">Added: 18 Apr
+                    2026 • 45 MB</p>
+                <div class="footer-btns">
+                    <button class="btn-sm"><i class="fas fa-share-alt"></i> Share</button>
+                    <button class="btn-sm btn-del" onclick="deleteFile(this)"><i class="fas fa-trash"></i>
+                        Delete</button>
+                </div>
+            </div>
+
+            <div class="material-card" data-name="project-boilerplate">
+                <div class="file-type-icon" style="color: #f59e0b;"><i class="fas fa-file-archive"></i></div>
+                <h4 style="margin:0">Project_Boilerplate.zip</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin: 5px 0;">Added:
+                    Yesterday • 2 MB</p>
+                <div class="footer-btns">
+                    <button class="btn-sm"><i class="fas fa-download"></i> Get</button>
+                    <button class="btn-sm btn-del" onclick="deleteFile(this)"><i class="fas fa-trash"></i>
+                        Delete</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trName = localStorage.getItem('userName') || "Rishon";
+            document.getElementById('tr-name-sidebar').innerText = "Prof. " + trName;
+            document.getElementById('tr-avatar-small').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+        });
+
+        // Feature: Live Search
+        function filterFiles() {
+            const query = document.getElementById('fileSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.material-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h4').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(query));
+            });
+        }
+
+        // Feature: Simulated Upload Logic
+        function simulateUpload() {
+            const name = prompt("Select a file name to simulate upload:");
+            if (name) {
+                alert("Uploading " + name + "... System is calculating hash and checking for viruses.");
+                setTimeout(() => {
+                    alert(name + " has been deployed to the student cloud successfully!");
+                }, 1000);
+            }
+        }
+
+        // Feature: Instant Delete
+        function deleteFile(btn) {
+            if (confirm("Students will lose access immediately. Delete?")) {
+                const card = btn.closest('.material-card');
+                card.style.transform = "scale(0.5)";
+                card.style.opacity = "0";
+                setTimeout(() => card.remove(), 300);
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

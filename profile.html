@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            /* Sidebar width */
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        .content-limit {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Profile Header Card */
+        .profile-card-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 24px 24px 0 0;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .header-info h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .header-info p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* Profile Details Body */
+        .profile-body {
+            background: white;
+            border-radius: 0 0 24px 24px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .info-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 800;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .detail-item label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Action Button */
+        .edit-profile-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: var(--primary-blue);
+            border: 1.5px solid var(--primary-blue);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .edit-profile-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .profile-card-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item active" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+
+    <main class="main-wrapper">
+        <div class="content-limit">
+
+            <div class="profile-card-header">
+                <img id="prof-avatar" src="https://ui-avatars.com/api/?name=User&background=fff&color=3498db&size=128"
+                    alt="Student" class="profile-avatar">
+                <div class="header-info">
+                    <h1 id="prof-name-header">LOADING NAME...</h1>
+                    <p id="prof-course-display">Bachelor of Computer Applications (BCA)</p>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">ID: <span id="prof-id-header">000000</span></p>
+                </div>
+            </div>
+
+            <div class="profile-body">
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-user"></i> Personal Information</div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Full Name</label>
+                            <span id="prof-full-name">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email Address</label>
+                            <span id="prof-email">loading@email.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Phone Number</label>
+                            <span id="prof-phone">+91 0000000000</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Date of Birth</label>
+                            <span>15 August 2004</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="section-title"><i class="fas fa-graduation-cap"></i> Academic Details</div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <label>Role</label>
+                            <span id="prof-role-display">Student</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Roll Number / Staff ID</label>
+                            <span id="prof-id-detail">0000</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Current Status</label>
+                            <span>Active</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Batch / Joining Year</label>
+                            <span>2024 - 2027</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+                <a href="changecredentials.html" class="edit-profile-btn">
+                    <i class="fas fa-edit"></i> Edit Account Settings
+                </a>
+            </div>
+            <div class="page-header-alt">
+                <a href="student.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+        </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. DATA PERSISTENCE HANDLER ---
+        const savedName = localStorage.getItem('userName');
+        const savedEmail = localStorage.getItem('userEmail');
+        const savedID = localStorage.getItem('userID');
+        const savedPhone = localStorage.getItem('userPhone'); // GET PHONE NUMBER
+
+        // Name and Avatar Logic
+        if (savedName) {
+            const headerName = document.getElementById('prof-name-header');
+            const fullNameSpan = document.getElementById('prof-full-name');
+            const avatar = document.getElementById('prof-avatar');
+
+            if (headerName) headerName.innerText = savedName;
+            if (fullNameSpan) fullNameSpan.innerText = savedName;
+            if (avatar) {
+                avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(savedName)}&background=fff&color=3498db&size=128`;
+            }
+        }
+
+        // Email Logic
+        if (savedEmail) {
+            const emailSpan = document.getElementById('prof-email');
+            if (emailSpan) emailSpan.innerText = savedEmail;
+        }
+
+        // ID Logic
+        if (savedID) {
+            const idHeader = document.getElementById('prof-id-header');
+            const idDetail = document.getElementById('prof-id-detail'); // Also update the detail section ID
+            if (idHeader) idHeader.innerText = savedID;
+            if (idDetail) idDetail.innerText = savedID;
+        }
+
+        // Phone Logic (NEW)
+        if (savedPhone) {
+            const phoneSpan = document.getElementById('prof-phone');
+            if (phoneSpan) phoneSpan.innerText = savedPhone;
+        }
+
+
+        // --- 2. SIDEBAR ACTIVE STATE HANDLER ---
+        const currentPath = window.location.pathname;
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && currentPath.includes(href)) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+
+
+        // --- 3. CLICK TO COPY FEATURE ---
+        const detailItems = document.querySelectorAll('.detail-item span');
+
+        detailItems.forEach(item => {
+            item.style.cursor = 'pointer';
+            item.title = 'Click to copy';
+
+            item.addEventListener('click', () => {
+                const text = item.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalColor = item.style.color;
+                    item.style.color = '#2ecc71';
+
+                    const toast = document.createElement('div');
+                    toast.innerText = 'Copied to clipboard!';
+                    toast.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #333;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        font-size: 0.8rem;
+                        z-index: 1000;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    `;
+                    document.body.appendChild(toast);
+
+                    setTimeout(() => {
+                        item.style.color = originalColor;
+                        toast.remove();
+                    }, 2000);
+                });
+            });
+        });
+    });
+
+    // --- 4. LOGOUT HANDLER ---
+    function handleLogout() {
+        if (confirm("Are you sure you want to log out of EduCore?")) {
+            localStorage.clear(); 
+            window.location.href = 'index.html';
+        }
+    }
+
+    // --- 5. SMOOTH FADE-IN EFFECT ---
+    window.onload = () => {
+        const limitContainer = document.querySelector('.content-limit');
+        if (limitContainer) {
+            limitContainer.style.opacity = '0';
+            limitContainer.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-out';
+            limitContainer.style.transform = 'translateY(10px)';
+
+            setTimeout(() => {
+                limitContainer.style.opacity = '1';
+                limitContainer.style.transform = 'translateY(0)';
+            }, 100);
+        }
+    };
+</script>
+    <script src="/js/student.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Grades | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --tr-warning: #f59e0b;
+            --tr-danger: #ef4444;
+            --bg-gray: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: var(--tr-primary);
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: var(--tr-primary);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .grade-controls {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-weight: 600;
+            outline: none;
+            background: white;
+        }
+
+        /* --- Table Styling --- */
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 18px 25px;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .student-info img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #eef2ff;
+        }
+
+        .name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .marks-input {
+            width: 70px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 800;
+            font-family: inherit;
+        }
+
+        .grade-badge {
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-block;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .grade-A {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .grade-B {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .grade-C {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .grade-F {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-save {
+            background: var(--tr-primary);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(99, 102, 241, 0.2);
+        }
+
+        tr.hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="header-flex">
+            <div>
+                <h1 style="margin:0; font-weight: 800; letter-spacing: -1px;">Grade Entry</h1>
+                <p style="margin:5px 0; color: var(--text-muted); font-weight: 600;">Sub: <span
+                        style="color: var(--tr-primary)">Python Programming</span></p>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">MAX MARKS:</span>
+                <input type="number" id="max-marks" class="marks-input" value="100" onchange="calculateAll()">
+            </div>
+        </div>
+
+        <div class="grade-controls">
+            <input type="text" id="gradeSearch" class="form-control" placeholder="Search student..."
+                onkeyup="filterGrades()">
+            <select class="form-control">
+                <option>Unit Test 1</option>
+                <option>Mid-Term Exam</option>
+                <option>Final Project</option>
+            </select>
+            <button class="btn-save" onclick="saveGrades()">Bulk Save</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STUDENT NAME</th>
+                        <th>ROLL NO.</th>
+                        <th>OBTAINED MARKS</th>
+                        <th>PERCENTAGE</th>
+                        <th>GRADE</th>
+                    </tr>
+                </thead>
+                <tbody id="grade-list">
+                    <tr class="grade-row">
+                        <td>
+                            <div class="student-info"><img src="https://ui-avatars.com/api/?name=Aditya+S"><span
+                                    class="name">Aditya Singh</span></div>
+                        </td>
+                        <td style="font-weight: 700; color: var(--text-muted);">BCA2B-01</td>
+                        <td><input type="number" class="marks-input score" value="85" oninput="calculateRow(this)"></td>
+                        <td class="perc-val" style="font-weight: 800;">85%</td>
+                        <td><span class="grade-badge grade-A">A</span></td>
+                    </tr>
+                    <tr class="grade-row">
+                        <td>
+                            <div class="student-info"><img src="https://ui-avatars.com/api/?name=Nishant+K"><span
+                                    class="name">Nishant Kulkarni</span></div>
+                        </td>
+                        <td style="font-weight: 700; color: var(--text-muted);">BCA2B-02</td>
+                        <td><input type="number" class="marks-input score" value="72" oninput="calculateRow(this)"></td>
+                        <td class="perc-val" style="font-weight: 800;">72%</td>
+                        <td><span class="grade-badge grade-B">B</span></td>
+                    </tr>
+                    <tr class="grade-row">
+                        <td>
+                            <div class="student-info"><img src="https://ui-avatars.com/api/?name=Sneha+M"><span
+                                    class="name">Sneha Mishra</span></div>
+                        </td>
+                        <td style="font-weight: 700; color: var(--text-muted);">BCA2B-03</td>
+                        <td><input type="number" class="marks-input score" value="45" oninput="calculateRow(this)"></td>
+                        <td class="perc-val" style="font-weight: 800;">45%</td>
+                        <td><span class="grade-badge grade-C">C</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trName = localStorage.getItem('userName') || "Rishon";
+            document.getElementById('tr-name-sidebar').innerText = "Prof. " + trName;
+            document.getElementById('tr-avatar-small').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(trName)}&background=4f46e5&color=fff`;
+
+            // Initial calculation
+            calculateAll();
+        });
+
+        function calculateRow(input) {
+            const max = parseFloat(document.getElementById('max-marks').value);
+            const score = parseFloat(input.value) || 0;
+            const row = input.closest('tr');
+
+            // Calculate Percentage
+            const percentage = Math.min(100, Math.round((score / max) * 100));
+            row.querySelector('.perc-val').innerText = percentage + "%";
+
+            // Determine Grade
+            const gradeBadge = row.querySelector('.grade-badge');
+            gradeBadge.className = 'grade-badge'; // reset
+
+            if (percentage >= 80) {
+                gradeBadge.innerText = 'A';
+                gradeBadge.classList.add('grade-A');
+            } else if (percentage >= 60) {
+                gradeBadge.innerText = 'B';
+                gradeBadge.classList.add('grade-B');
+            } else if (percentage >= 40) {
+                gradeBadge.innerText = 'C';
+                gradeBadge.classList.add('grade-C');
+            } else {
+                gradeBadge.innerText = 'F';
+                gradeBadge.classList.add('grade-F');
+            }
+        }
+
+        function calculateAll() {
+            document.querySelectorAll('.score').forEach(input => calculateRow(input));
+        }
+
+        function filterGrades() {
+            const query = document.getElementById('gradeSearch').value.toLowerCase();
+            document.querySelectorAll('.grade-row').forEach(row => {
+                const name = row.querySelector('.name').innerText.toLowerCase();
+                row.classList.toggle('hidden', !name.includes(query));
+            });
+        }
+
+        function saveGrades() {
+            alert("All grades have been calculated and uploaded to the student portal!");
+            window.location.href = 'teacher.html';
+        }
+
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+
+</html>

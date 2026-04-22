@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Permissions | EduCore Control</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Admin-Specific Overrides */
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+        }
+
+        .sidebar-logo span {
+            color: var(--admin-dark);
+            font-weight: 800;
+        }
+
+        .sidebar-nav .nav-item.active {
+            background: #fff1f2;
+            color: var(--admin-red);
+            border-right: 4px solid var(--admin-red);
+        }
+
+        .header-search {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--admin-red);
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .welcome-banner {
+            border: 1px solid #fee2e2;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        :root {
+            --admin-red: #ef4444;
+            --admin-dark: #0f172a;
+            --accent: #ef4444;
+        }
+
+        /* --- Custom Toggle Switches --- */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--admin-red);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(22px);
+        }
+
+        /* --- Table Styling --- */
+        .roles-container {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            margin-top: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .roles-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .roles-table th {
+            background: #f8fafc;
+            padding: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .roles-table td {
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+            color: var(--admin-dark);
+            font-weight: 600;
+        }
+
+        .perm-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .perm-icon {
+            width: 32px;
+            height: 32px;
+            background: #fff1f2;
+            color: var(--admin-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .admin-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .admin-back-btn:hover {
+            color: var(--admin-red);
+            border-color: var(--admin-red);
+            transform: translateX(-5px);
+        }
+
+        .save-banner {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--admin-dark);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .save-banner.active {
+            transform: translateY(0);
+        }
+
+        .btn-save {
+            background: var(--admin-red);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="color: var(--admin-red);"></i>
+            <span>EduCore <small
+                    style="font-size: 0.55rem; display: block; letter-spacing: 2px; color: var(--admin-red); font-weight: 900;">SYSTEM
+                    ADMIN</small></span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">SYSTEM CONTROL</div>
+            <a href="admin.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> System Overview
+            </a>
+            <a href="admin-users.html" class="nav-item">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="admin-logs.html" class="nav-item">
+                <i class="fas fa-history"></i> Access Logs <span class="badge"
+                    style="background: var(--admin-red);">12</span>
+            </a>
+
+            <div class="nav-section">INSTITUTION</div>
+            <a href="admin-depts.html" class="nav-item">
+                <i class="fas fa-sitemap"></i> Departments
+            </a>
+            <a href="admin-finance.html" class="nav-item">
+                <i class="fas fa-wallet"></i> Revenue & Fees
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()" style="color: var(--admin-red);">
+                    <i class="fas fa-power-off"></i> System Exit
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-search">
+                <i class="fas fa-key"></i>
+                <input type="text" placeholder="Search permissions...">
+            </div>
+            <div class="user-profile-top">
+                <div class="user-text">
+                    <a href="ad-profile.html" style="text-decoration: none;"><span class="user-name">ADMINISTRATOR</span></a>
+                    <span class="user-role">Super User | Tier 1</span>
+                </div>
+                <a href="ad-profile.html" style="text-decoration: none;"><img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" alt="Admin" class="header-avatar"
+                    style="border: 2px solid var(--admin-red); padding: 2px;"></a>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);">
+                <a href="admin.html" class="admin-back-btn">
+                    <i class="fas fa-chevron-left"></i> Back to Console
+                </a>
+                <h1 style="color: var(--admin-dark); margin-top: 15px;">Role Permissions</h1>
+                <p>Define global access levels for EduCore account types.</p>
+            </div>
+
+            <div class="roles-container">
+                <table class="roles-table">
+                    <thead>
+                        <tr>
+                            <th>Module / Permission</th>
+                            <th style="text-align: center;">Student</th>
+                            <th style="text-align: center;">Faculty</th>
+                            <th style="text-align: center;">Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="perm-label">
+                                    <div class="perm-icon"><i class="fas fa-folder-open"></i></div>
+                                    <div>
+                                        Access Course Material
+                                        <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 400;">View &
+                                            Download files</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked
+                                        onchange="showSave()"><span class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked
+                                        onchange="showSave()"><span class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked disabled><span
+                                        class="slider"></span></label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="perm-label">
+                                    <div class="perm-icon"><i class="fas fa-edit"></i></div>
+                                    <div>
+                                        Modify Attendance
+                                        <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 400;">Edit daily
+                                            logs</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center"><label class="switch"><input type="checkbox" onchange="showSave()"><span
+                                        class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked
+                                        onchange="showSave()"><span class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked disabled><span
+                                        class="slider"></span></label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="perm-label">
+                                    <div class="perm-icon"><i class="fas fa-wallet"></i></div>
+                                    <div>
+                                        Financial Records
+                                        <div style="font-size: 0.7rem; color: #94a3b8; font-weight: 400;">View
+                                            revenue/fees</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="center"><label class="switch"><input type="checkbox" onchange="showSave()"><span
+                                        class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" onchange="showSave()"><span
+                                        class="slider"></span></label></td>
+                            <td align="center"><label class="switch"><input type="checkbox" checked disabled><span
+                                        class="slider"></span></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div class="save-banner" id="saveBanner">
+        <span>Unsaved changes detected in permissions matrix.</span>
+        <button class="btn-save" onclick="saveChanges()">Save Changes</button>
+    </div>
+
+    <script>
+        function showSave() {
+            document.getElementById('saveBanner').classList.add('active');
+        }
+
+        function saveChanges() {
+            const btn = document.querySelector('.btn-save');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+
+            setTimeout(() => {
+                document.getElementById('saveBanner').classList.remove('active');
+                btn.innerText = 'Save Changes';
+                alert('System Permissions Updated Successfully.');
+            }, 1500);
+        }
+
+        function handleLogout() {
+            if (confirm("Terminate Admin Session?")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

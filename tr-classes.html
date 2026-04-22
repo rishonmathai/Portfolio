@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Classes | EduCore Faculty</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tr-primary: #6366f1;
+            --tr-success: #10b981;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+            color: var(--text-dark);
+        }
+
+        /* --- Sidebar (Synced with Announcements) --- */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            font-weight: 800; font-size: 1.5rem;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 40px; color: var(--tr-primary);
+        }
+
+        .nav-item {
+            padding: 14px 18px; border-radius: 12px;
+            color: var(--text-muted); text-decoration: none;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 8px; font-weight: 700; transition: 0.3s;
+        }
+
+        .nav-item.active { background: #eef2ff; color: var(--tr-primary); }
+
+        /* --- Main Content --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: 280px;
+            padding: 50px;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header-title h1 { font-size: 1.8rem; font-weight: 800; margin: 0; }
+        .header-title p { color: var(--text-muted); font-weight: 600; margin-top: 5px; }
+
+        /* --- Class Cards Grid --- */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .class-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: var(--tr-primary);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 0; right: 0;
+            background: var(--tr-primary);
+            color: white;
+            padding: 6px 15px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border-bottom-left-radius: 15px;
+            text-transform: uppercase;
+        }
+
+        .class-icon {
+            width: 50px; height: 50px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: var(--tr-primary);
+            margin-bottom: 20px;
+        }
+
+        .class-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 5px; }
+        .class-dept { color: var(--text-muted); font-size: 0.85rem; font-weight: 700; margin-bottom: 20px; display: block;}
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            margin-bottom: 20px;
+        }
+
+        .stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .stat-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .stat-value { font-size: 0.95rem; font-weight: 800; }
+
+        .action-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover { background: #f8fafc; border-color: var(--tr-primary); color: var(--tr-primary); }
+        .btn-primary-action { background: var(--tr-primary); color: white; border: none; }
+        .btn-primary-action:hover { background: #4f46e5; color: white; }
+
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">FACULTY MENU</div>
+            <a href="teacher.html" class="nav-item active">
+                <i class="fas fa-chalkboard-teacher"></i> Dashboard
+            </a>
+            <a href="tr-profile.html" class="nav-item">
+                <i class="fas fa-user-tie"></i> My Profile
+            </a>
+            <a href="tr-announcements.html" class="nav-item">
+                <i class="fas fa-bell"></i> Announcements <span class="badge">5</span>
+            </a>
+
+            <div class="nav-section">ACADEMICS</div>
+            <a href="tr-classes.html" class="nav-item">
+                <i class="fas fa-users"></i> My Classes
+            </a>
+            <a href="tr-schedule.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Lecture Plan
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="tr-settings.html" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="header-flex">
+            <div class="header-title">
+                <h1>My Classes</h1>
+                <p>Academic Session 2025-26 | Semester IV</p>
+            </div>
+            <button class="btn-action btn-primary-action" style="flex: none; padding: 12px 25px;">
+                <i class="fas fa-plus"></i> Add New Class
+            </button>
+        </header>
+
+        <div class="class-grid">
+            <div class="class-card">
+                <div class="card-tag">Today @ 10:00 AM</div>
+                <div class="class-icon"><i class="fas fa-database"></i></div>
+                <div class="class-name">Database Management Systems</div>
+                <span class="class-dept">FY BCA - Division A</span>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-label">Students</span>
+                        <span class="stat-value">64</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Attendance</span>
+                        <span class="stat-value" style="color: var(--tr-success);">88%</span>
+                    </div>
+                </div>
+
+                <div class="action-group">
+                    <button class="btn-action btn-primary-action" onclick="location.href='tr-attendance.html'">
+                        <i class="fas fa-user-check"></i> Attendance
+                    </button>
+                    <button class="btn-action">
+                        <i class="fas fa-book"></i> Materials
+                    </button>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <div class="card-tag" style="background: #94a3b8;">Tomorrow @ 11:30 AM</div>
+                <div class="class-icon" style="color: #0d9488;"><i class="fas fa-code"></i></div>
+                <div class="class-name">Web Development (Next.js)</div>
+                <span class="class-dept">SY BCA - Division B</span>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-label">Students</span>
+                        <span class="stat-value">58</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Attendance</span>
+                        <span class="stat-value" style="color: #f59e0b;">74%</span>
+                    </div>
+                </div>
+
+                <div class="action-group">
+                    <button class="btn-action btn-primary-action">
+                        <i class="fas fa-user-check"></i> Attendance
+                    </button>
+                    <button class="btn-action">
+                        <i class="fas fa-book"></i> Materials
+                    </button>
+                </div>
+            </div>
+
+            <div class="class-card">
+                <div class="card-tag" style="background: #94a3b8;">Thursday @ 09:00 AM</div>
+                <div class="class-icon" style="color: #f59e0b;"><i class="fas fa-microchip"></i></div>
+                <div class="class-name">Computer Architecture</div>
+                <span class="class-dept">FY BCA - Division A</span>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-label">Students</span>
+                        <span class="stat-value">62</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Attendance</span>
+                        <span class="stat-value" style="color: var(--tr-success);">92%</span>
+                    </div>
+                </div>
+
+                <div class="action-group">
+                    <button class="btn-action btn-primary-action">
+                        <i class="fas fa-user-check"></i> Attendance
+                    </button>
+                    <button class="btn-action">
+                        <i class="fas fa-book"></i> Materials
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function handleLogout() {
+            if (confirm("Are you sure you want to logout from the Faculty Portal?")) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }}
+    </script>
+    <script src="teacher.js"></script>
+</body>
+</html>

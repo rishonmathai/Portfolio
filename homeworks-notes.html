@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Resources | EduCore</title>
+    <link rel="stylesheet" href="student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-teal: #1abc9c;
+            --assignment-purple: #9b59b6;
+            --notes-blue: #3498db;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            display: flex;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 290px;
+            padding: 40px;
+        }
+
+        .page-header { margin-bottom: 40px; }
+        .page-header h1 { font-size: 2rem; color: var(--text-dark); margin: 0; }
+
+        /* Section Layout */
+        .academic-section {
+            margin-bottom: 50px;
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .section-title i {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-decoration: none;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #3498db;
+            border-color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        /* 3-Column Grid for Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .card-info h4 { margin: 0 0 5px 0; color: var(--text-dark); }
+        .card-info p { margin: 0; font-size: 0.85rem; color: #64748b; }
+
+        .card-action {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-action {
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        /* Color Coding */
+        .homeworks .section-title i { background: var(--primary-teal); }
+        .homeworks .btn-action { color: var(--primary-teal); background: #e6f7f4; }
+        
+        .assignments .section-title i { background: var(--assignment-purple); }
+        .assignments .btn-action { color: var(--assignment-purple); background: #f4ecf7; }
+
+        .study-material .section-title i { background: var(--notes-blue); }
+        .study-material .btn-action { color: var(--notes-blue); background: #ebf5fb; }
+
+        .deadline-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper { margin-left: 0; padding: 20px; }
+        }
+    </style>
+    <script src="theme-manager.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-university"></i>
+            <span>EduCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="student.html" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="profile.html" class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="notification.html" class="nav-item" data-page="notifications" onclick="clearNotifications()">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notif-badge">3</span>
+            </a>
+
+            <div class="nav-section">PREFERENCES</div>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Account Settings
+            </a>
+            <a href="security.html" class="nav-item" data-page="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn-sidebar" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="page-header">
+            <h1>Academic Hub</h1>
+        </header>
+
+        <section class="academic-section homeworks" style="animation-delay: 0.1s;">
+            <div class="section-title">
+                <i class="fas fa-pencil-alt"></i> Daily Homeworks
+            </div>
+            <div class="card-grid">
+                <div class="resource-card">
+                    <div class="card-info">
+                        <h4>JS Event Listeners</h4>
+                        <p>Subject: Full Stack Dev</p>
+                    </div>
+                    <div class="card-action">
+                        <span class="deadline-tag">Due: Tomorrow</span>
+                        <a href="#" class="btn-action">Open Tasks</a>
+                    </div>
+                </div>
+                <div class="resource-card">
+                    <div class="card-info">
+                        <h4>Graph Theory Basics</h4>
+                        <p>Subject: Data Structures</p>
+                    </div>
+                    <div class="card-action">
+                        <span class="deadline-tag">Due: 24 April</span>
+                        <a href="#" class="btn-action">Open Tasks</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="academic-section assignments" style="animation-delay: 0.3s;">
+            <div class="section-title">
+                <i class="fas fa-tasks"></i> Major Assignments
+            </div>
+            <div class="card-grid">
+                <div class="resource-card">
+                    <div class="card-info">
+                        <h4>Portfolio Website Project</h4>
+                        <p>Weightage: 20% of Grade</p>
+                    </div>
+                    <div class="card-action">
+                        <span style="font-size: 0.75rem; color: #64748b;">Status: In Progress</span>
+                        <a href="#" class="btn-action">Submit Portal</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="academic-section study-material" style="animation-delay: 0.5s;">
+            <div class="section-title">
+                <i class="fas fa-file-pdf"></i> Study Material & Notes
+            </div>
+            <div class="card-grid">
+                <div class="resource-card">
+                    <div class="card-info">
+                        <h4>Python Flask Handbook</h4>
+                        <p>Unit 1 & 2 • PDF (4.2 MB)</p>
+                    </div>
+                    <div class="card-action">
+                        <span style="font-size: 0.75rem; color: #64748b;">Added: Today</span>
+                        <a href="#" class="btn-action"><i class="fas fa-download"></i> Download</a>
+                    </div>
+                </div>
+                <div class="resource-card">
+                    <div class="card-info">
+                        <h4>Software Testing Slides</h4>
+                        <p>Unit 4 • PPTX (12 MB)</p>
+                    </div>
+                    <div class="card-action">
+                        <span style="font-size: 0.75rem; color: #64748b;">Added: 2 days ago</span>
+                        <a href="#" class="btn-action"><i class="fas fa-download"></i> Download</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="page-header-alt">
+            <a href="student.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        function handleLogout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+    <script src="student.js"></script>
+</body>
+
+</html>
